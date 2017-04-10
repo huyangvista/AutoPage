@@ -1,0 +1,31 @@
+SELECT
+/*4国内2国际          */  CASE ticket_type WHEN '4' THEN '国内' WHEN '2' THEN '国际' END  AS    ticket_type,
+SUM(difference_amount) AS difference_amount_sum,
+SUM(total_price) AS total_price_sum,
+SUM(base_comm_amount) AS base_comm_amount_sum,
+
+ticket_type,
+user_id,
+user_name,
+group_id,
+group_name
+FROM
+(
+SELECT
+sys_group.user_id,
+sys_group.user_name,
+sys_group.group_id,
+sys_group.group_name,
+/*4国内2国际          */                bas_air_tktdata.ticket_type,
+/*差额                */				bas_air_trans_records.difference_amount,
+/*实收                */			  bas_air_trans_records.total_price,
+/*--代理费            */				CAST(( FORMAT(				IF(ISNULL(bas_air_trans_records.cash_amount),0,bas_air_trans_records.cash_amount)				* IF(ISNULL(bas_air_trans_records.comm_percent),0,bas_air_trans_records.comm_percent)		+ IF(ISNULL(bas_air_trans_records.comm_amount),0,bas_air_trans_records.comm_amount),2)) AS CHAR)  AS base_comm_amount,
+/*--代理费            */				CAST(( FORMAT(				IF(ISNULL(bas_air_trans_records.cash_amount),0,bas_air_trans_records.cash_amount)				* IF(ISNULL(bas_air_trans_records.comm_percent),0,bas_air_trans_records.comm_percent)		+ IF(ISNULL(bas_air_trans_records.comm_amount),0,bas_air_trans_records.comm_amount),2)) AS CHAR)   + bas_air_trans_records.difference_amount   AS base_comm_amount_sum
+
+FROM
+bas_air_trans_records
+LEFT JOIN (SELECT * FROM bas_air_tktdata  WHERE  del_flag = '0' )bas_air_tktdata ON bas_air_tktdata.id  = bas_air_trans_records.tkt_id
+LEFT JOIN (SELECT sys_user.id AS user_id,sys_group.id AS group_id, sys_group.group_name,sys_user.`name` AS user_name FROM sys_user LEFT JOIN sys_user_group on sys_user.id = sys_user_group.user_id LEFT JOIN sys_group ON sys_group.id = sys_user_group.group_id)sys_group on sys_group.user_id = bas_air_trans_records.operate_by
+WHERE bas_air_trans_records.del_flag = '0' AND  air_type = '0' AND bas_air_trans_records.operate_date >= '2017-03-01' AND bas_air_trans_records.operate_date < '2017-04-01'
+)t
+GROUP BY group_id,ticket_type
