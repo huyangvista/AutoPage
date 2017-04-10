@@ -1,0 +1,378 @@
+SELECT 
+/*区域	*/
+/*组别	*/group_name,
+/*国内张数*/
+/*预销售额*/SUM(receivable_price) AS receivable_price_sum,
+/*销售额*/SUM(total_price) AS total_price_sum,
+/*代理费*/  SUM(base_comm_amount) AS base_comm_amount_sum,
+/*差额*/ SUM(difference_amount)AS difference_amount_sum,
+/*单张利润*/
+/*利润率*/
+business_type,
+operate_name,
+ticket_status,
+id
+FROM
+/*集合开始 */
+(
+	/*最后一次汇总为一个表*/
+	SELECT
+sys_group.id AS  group_id ,
+
+sys_group.group_name,
+		/*id                  */			selecttable.id,
+		/*票号/流水号         */			selecttable.number,
+		/*业务类型 []         */			selecttable.business_type,
+		/*操作类型            */			selecttable.business_type_ss,
+		/*结算方式 []         */			selecttable.settle_type,
+		/*付款企业            */			bas_company_info.company_name,
+		/*付款企业父级        */			bas_company_info_parent.company_name  AS company_name_parent,
+		/*结账状态            */			selecttable. status,
+		/*应收                &gt;*/		selecttable.receivable_price,
+		/*实收                &gt;*/		selecttable.total_price,
+
+		/*应收                &gt;*/		IF (selecttable.receivable_price >= 0,CAST(selecttable.receivable_price AS CHAR),'0.00') AS receivable_price_a,
+		/*实收                &gt;*/		IF (selecttable.total_price  >= 0,CAST(selecttable.total_price AS CHAR),'0.00') AS total_price_a,
+		/*应退                &lt;*/		IF (selecttable.receivable_price   < 0,CAST(selecttable.receivable_price AS CHAR),'0.00') AS receivable_price_b,
+		/*实退                &lt;*/		IF (selecttable.total_price   < 0,CAST(selecttable.total_price AS CHAR),'0.00') AS total_price_b,
+		/*差额                */			CAST(selecttable.difference_amount AS CHAR) AS difference_amount,
+		/*操作人              */			sys_user. name AS operate_name,
+		/*操作时间            */			selecttable.operate_date,
+		/*--除标记            */			selecttable.del_flag,
+		/*--修改时间          */			selecttable.update_date,
+		/*--创建时间          */			selecttable.create_date,
+		/*--操作序号          */			selecttable.seq_num,
+		/*==操作类型==票状态（T-出票 R-退票 V-废票 TR-部分退票  RI-退票对账中 TI-部分退票对账中）*/selecttable.ticket_status,
+		/*--公司id            */			selecttable.settle_company_id,
+		/*--录入者            */			selecttable.blmaker,
+		/*--旅客              */			selecttable.passenger_name,
+				/*--其他项              */ CAST(selecttable.bill_amount AS CHAR) AS bill_amount,
+		/*--代理费            */	  	    CAST(selecttable.base_comm_amount AS CHAR) AS base_comm_amount
+
+	FROM
+	(
+
+		/*UNION ALL 开始连接所有表*/
+		/*获取机票 1 连接 bas_air_tktdata bas_and_records_income */
+		SELECT
+			/*id                  */			bas_and_records_income.id,
+			/*票号/流水号         */			CONCAT(bas_air_tktdata.cair,'-',bas_air_tktdata.ticket_number) AS number,
+			/*业务类型 []         */			'0' AS business_type,
+			/*操作类型            */			bas_and_records_income.business_type_ss,
+			/*结算方式 []         */			bas_air_tktdata.settle_type,
+			/*付款企业            */
+			/*结账状态            */			bas_and_records_income. status,
+			/*应收                */			bas_and_records_income.receivable_price,
+			/*实收                */			bas_and_records_income.total_price,
+			/*差额                */			bas_and_records_income.difference_amount,
+			/*操作人              */			bas_and_records_income.operate_by,
+			/*操作时间            */			bas_and_records_income.operate_date,
+			/*--公司id            */			bas_air_tktdata.settle_company_id,
+			/*--除标记            */			bas_and_records_income.del_flag,
+			/*--修改时间          */			bas_and_records_income.update_date,
+			/*--修改人            */			bas_and_records_income.update_by,
+			/*--创建时间          */			bas_and_records_income.create_date,
+			/*--操作序号          */			bas_and_records_income.seq_num,
+			/*==操作类型==票状态（T-出票 R-退票 V-废票 TR-部分退票  RI-退票对账中 TI-部分退票对账中）*/			bas_and_records_income.ticket_status,
+			/*--录入者            */			bas_air_tktdata.create_by AS blmaker,
+			/*--旅客              */			bas_air_tktdata.passenger_name,
+												/*--旅客              */						 '0.00' AS bill_amount,
+			/*--代理费            */			bas_and_records_income.base_comm_amount
+
+		FROM
+		/*-----------------------------------------------------------------------*/
+		(
+			/*连接 bas_air_trans_records bas_income_info*/
+			SELECT
+				/*--交易id            */				bas_air_trans_records.id,
+				/*--对应订单id        */				bas_air_trans_records.tkt_id,
+				/*票号/流水号         */
+				/*业务类型 []         */
+				/*操作类型            */				bas_air_trans_records.business_type AS business_type_ss,
+				/*结算方式 []         */
+				/*付款企业            */
+				/*结账状态 []         */				bas_income_info. status,
+				/*应收                */				bas_air_trans_records.receivable_price,
+				/*实收                */				bas_air_trans_records.total_price,
+				/*差额                */				bas_air_trans_records.difference_amount,
+				/*操作人              */				bas_air_trans_records.operate_by,
+				/*操作时间            */				bas_air_trans_records.operate_date,
+				/*--结款公司月结id [] */
+				/*--个人支付名字 []   */
+				/*--删除标记          */				bas_air_trans_records.del_flag,
+				/*--修改时间          */				bas_air_trans_records.update_date,
+				/*--修改人            */				bas_air_trans_records.update_by,
+				/*--创建时间          */				bas_air_trans_records.create_date,
+				/*--操作序号          */				bas_air_trans_records.seq_num,
+				/*==操作类型==票状态（T-出票 R-退票 V-废票 TR-部分退票  RI-退票对账中 TI-部分退票对账中）*/				bas_air_trans_records.ticket_status,
+				/*--代理费            */				CAST(( FORMAT(
+				IF(ISNULL(bas_air_trans_records.cash_amount),0,bas_air_trans_records.cash_amount)
+				* IF(ISNULL(bas_air_trans_records.comm_percent),0,bas_air_trans_records.comm_percent)
+				+ IF(ISNULL(bas_air_trans_records.comm_amount),0,bas_air_trans_records.comm_amount),2)) AS CHAR)     AS base_comm_amount
+
+			FROM
+				(SELECT	* FROM	bas_air_trans_records WHERE	air_type = '0') bas_air_trans_records
+				LEFT JOIN
+				(
+					SELECT	business_id, MIN(status) AS status FROM	bas_income_info	WHERE  business_type = '0' GROUP BY business_id
+				) bas_income_info ON bas_income_info.business_id = bas_air_trans_records.id
+		)
+		/*-----------------------------------------------------------------------*/
+		bas_and_records_income
+		LEFT JOIN
+		bas_air_tktdata
+		ON bas_and_records_income.tkt_id = bas_air_tktdata.id
+		/*获取机票 1 end */
+
+
+
+		UNION ALL
+		/*录入的机票2 连接 bas_air_tktdata bas_and_records_income */
+		SELECT
+			/*id                  */				bas_and_records_income.id,
+			/*票号/流水号         */				bas_air_purchase.purchase_no AS number,
+			/*业务类型 []         */				'3' AS business_type,
+			/*操作类型            */				bas_and_records_income.business_type_ss,
+			/*结算方式 []         */				bas_air_purchase.settle_type,
+			/*付款企业            */
+			/*结账状态            */				bas_and_records_income. status,
+			/*应收                */				bas_and_records_income.receivable_price,
+			/*实收                */				bas_and_records_income.total_price,
+			/*差额                */				bas_and_records_income.difference_amount,
+			/*操作人              */				bas_and_records_income.operate_by,
+			/*操作时间            */				bas_and_records_income.operate_date,
+			/*--公司id            */				bas_air_purchase.settle_company_id,
+			/*--除标记            */				bas_and_records_income.del_flag,
+			/*--修改时间          */				bas_and_records_income.update_date,
+			/*--修改人            */				bas_and_records_income.update_by,
+			/*--创建时间          */				bas_and_records_income.create_date,
+			/*--操作序号          */				bas_and_records_income.seq_num,
+			/*==操作类型==票状态（T-出票 R-退票 V-废票 TR-部分退票  RI-退票对账中 TI-部分退票对账中）*/				bas_and_records_income.ticket_status,
+			/*--录入者            */				bas_air_purchase.blmaker,
+			/*--旅客              */				'' AS passenger_name,
+									/*--旅客              */						 '0.00' AS bill_amount,
+			/*--代理费            */			  '0.00' AS base_comm_amount
+
+		FROM
+		/*-----------------------------------------------------------------------*/
+		(
+			/*连接 bas_air_trans_records bas_income_info */
+			SELECT
+				/*--交易id            */					bas_air_trans_records.id,
+				/*--对应订单id        */					bas_air_trans_records.tkt_id,
+				/*票号/流水号         */
+				/*业务类型 []         */
+				/*操作类型            */					bas_air_trans_records.business_type AS business_type_ss,
+				/*结算方式 []         */
+				/*付款企业            */
+				/*结账状态 []         */					bas_income_info. status,
+				/*应收                */					bas_air_trans_records.receivable_price,
+				/*实收                */					bas_air_trans_records.total_price,
+				/*差额                */					bas_air_trans_records.difference_amount,
+				/*操作人              */					bas_air_trans_records.operate_by,
+				/*操作时间            */					bas_air_trans_records.operate_date,
+				/*--结款公司月结id [] */
+				/*--个人支付名字 []   */
+				/*--删除标记          */					bas_air_trans_records.del_flag,
+				/*--修改时间          */					bas_air_trans_records.update_date,
+				/*--修改人            */					bas_air_trans_records.update_by,
+				/*--创建时间          */					bas_air_trans_records.create_date,
+				/*--操作序号          */					bas_air_trans_records.seq_num,
+				/*==操作类型==票状态（T-出票 R-退票 V-废票 TR-部分退票  RI-退票对账中 TI-部分退票对账中）*/					bas_air_trans_records.ticket_status
+			FROM
+				(SELECT	* FROM	bas_air_trans_records WHERE	air_type = '1') bas_air_trans_records
+			LEFT JOIN
+			(
+				SELECT	business_id,MIN(status) AS status FROM	bas_income_info
+				WHERE business_type = '0'
+				GROUP BY business_id
+			) bas_income_info ON bas_income_info.business_id = bas_air_trans_records.id
+		)
+		/*-----------------------------------------------------------------------*/
+		bas_and_records_income
+		LEFT JOIN
+		bas_air_purchase
+		ON bas_and_records_income.tkt_id = bas_air_purchase.id
+		/*录入的机票2 end */
+
+
+		UNION ALL
+		/*酒店3 bas_hotel_purchase bas_and_records_income */
+		SELECT
+			/*id                  */					bas_and_records_income.id,
+			/*票号/流水号         */					bas_hotel_purchase.purchase_no AS number,
+			/*业务类型 []         */					'2' AS business_type,
+			/*操作类型            */					bas_and_records_income.business_type_ss,
+			/*结算方式 []         */					bas_hotel_purchase.settle_type,
+			/*付款企业            */
+			/*结账状态 []         */					bas_and_records_income. status,
+			/*应收                */					bas_and_records_income.receivable,
+			/*实收                */					bas_and_records_income.total_price,
+			/*差额                */					bas_and_records_income.difference_amount,
+			/*操作人              */					bas_and_records_income.operate_by,
+			/*操作时间            */					bas_and_records_income.operate_date,
+			/*--公司id            */					bas_hotel_purchase.settle_company_id,
+			/*--除标记            */					bas_and_records_income.del_flag,
+			/*--修改时间          */					bas_and_records_income.update_date,
+			/*--修改人            */					bas_and_records_income.update_by,
+			/*--创建时间          */					bas_and_records_income.create_date,
+			/*--操作序号          */					bas_and_records_income.operate_num,
+			/*==操作类型==票状态（T-出票 R-退票 V-废票 TR-部分退票  RI-退票对账中 TI-部分退票对账中）*/					'' AS ticket_status,
+			/*--录入者            */					bas_hotel_purchase.blmaker,
+			/*--旅客              */					'' AS passenger_name,
+									/*--旅客              */						 '0.00' AS bill_amount,
+			/*--代理费            */			    '0.00' AS base_comm_amount
+		FROM
+		/*-----------------------------------------------------------------------*/
+		(
+			/*连接 bas_hotel_trans_records bas_income_info */
+			SELECT
+				/*--交易id            */						bas_hotel_trans_records.id,
+				/*--对应订单id        */						bas_hotel_trans_records.hotel_purchase_id,
+				/*票号/流水号         */
+				/*业务类型 []         */
+				/*操作类型            */						bas_hotel_trans_records.business_type AS business_type_SS,
+				/*结算方式 []         */
+				/*付款企业            */
+				/*结账状态            */						bas_income_info. status,
+				/*应收                */						bas_hotel_trans_records.receivable,
+				/*实收                */						bas_hotel_trans_records.total_price,
+				/*差额                */						bas_hotel_trans_records.difference_amount,
+				/*操作人              */						bas_hotel_trans_records.operate_by,
+				/*操作时间            */						bas_hotel_trans_records.operate_date,
+				/*--结款公司月结id [] */
+				/*--个人支付名字 []   */
+				/*--删除标记          */						bas_hotel_trans_records.del_flag,
+				/*--修改时间          */						bas_hotel_trans_records.update_date,
+				/*--修改人            */						bas_hotel_trans_records.update_by,
+				/*--创建时间          */						bas_hotel_trans_records.create_date,
+				/*--操作序号          */						bas_hotel_trans_records.operate_num
+			FROM
+				bas_hotel_trans_records
+			LEFT JOIN
+			(
+				SELECT business_id,MIN(status) AS status FROM	bas_income_info
+				WHERE	business_type = '2'
+				GROUP BY business_id
+			) bas_income_info ON bas_income_info.business_id = bas_hotel_trans_records.id
+			GROUP BY	bas_hotel_trans_records.id
+		)
+		/*-----------------------------------------------------------------------*/
+		bas_and_records_income
+		LEFT JOIN
+		bas_hotel_purchase
+		ON bas_and_records_income.hotel_purchase_id = bas_hotel_purchase.id
+		/*酒店3end */
+
+		UNION ALL
+		/*获取保险 4 连接 bas_air_tktdata bas_and_records_income */
+		SELECT
+			/*id                  */						bas_and_records_income.id,
+			/*票号/流水号         */						bas_and_records_income.pol_id AS number,
+			/*业务类型 []         */						'1' AS business_type,
+			/*操作类型            */						bas_and_records_income.business_type_ss,
+			/*结算方式 []         */						bas_and_records_income.settle_type,
+			/*付款企业            */
+			/*结账状态            */						bas_and_records_income. status,
+			/*应收                */						bas_and_records_income.receivable_price,
+			/*实收                */						bas_and_records_income.total_price,
+			/*差额                */						bas_and_records_income.difference_amount,
+			/*操作人              */						bas_and_records_income.create_by,
+			/*操作时间            */						bas_and_records_income.create_date,
+			/*--公司id            */						bas_and_records_income.settle_company_id,
+			/*--除标记            */						bas_and_records_income.del_flag,
+			/*--修改时间          */						bas_and_records_income.update_date,
+			/*--修改人            */						bas_and_records_income.update_by,
+			/*--创建时间          */						bas_and_records_income.create_date AS create_date1,
+			/*--操作序号          */						bas_and_records_income.seq_num,
+			/*==操作类型==票状态（T-出票 R-退票 V-废票 TR-部分退票  RI-退票对账中 TI-部分退票对账中）*/						bas_and_records_income.trans_status,
+			/*--录入者            */						bas_and_records_income.create_by AS blmaker,
+			/*--旅客              */						'' AS passenger_name,
+									/*--旅客              */						 '0.00' AS bill_amount,
+			/*--代理费            */		    	       '0.00' AS base_comm_amount
+		FROM
+		(
+			/*连接 bas_air_trans_records bas_income_info*/
+			SELECT
+				/*--交易id            */					bas_insurance.id,
+				/*--对应订单id        */					bas_insurance.tkt_id,
+				/*票号/流水号         */					bas_insurance.pol_id,
+				/*业务类型 []         */					bas_income_info.business_type,
+				/*操作类型            */					bas_insurance.is_batch AS business_type_ss,
+				/*结算方式 []         */					bas_income_info.settle_type,
+				/*付款企业            */
+				/*结账状态 []         */					bas_income_info. status,
+				/*应收                */					IF (bas_insurance.is_free = 0,6,6) AS receivable_price,
+				/*实收                */					IF (bas_insurance.is_free = 0,20,0) AS total_price,
+				/*差额                */					IF (bas_insurance.is_free = 0,14,-6) AS difference_amount,
+				/*操作人              */					bas_insurance.create_by,
+				/*操作时间            */					bas_insurance.create_date,
+				/*--结款公司月结id [] */					bas_income_info.corp_dunning,
+				/*--个人支付名字 []   */					bas_income_info. name,
+				/*--删除标记          */					bas_insurance.del_flag,
+				/*--修改时间          */					bas_insurance.update_date,
+				/*--修改人            */					bas_insurance.update_by,
+				/*--创建时间          */					bas_insurance.create_date AS create_date1,
+				/*--操作序号          */					1 AS seq_num,
+				/*--结算公司ID        */					bas_income_info.settle_company_id,
+				/*==操作类型==票状态（T-出票 R-退票 V-废票 TR-部分退票  RI-退票对账中 TI-部分退票对账中）*/					bas_insurance.trans_status
+			FROM
+				bas_insurance
+				LEFT JOIN
+				(
+					SELECT bas.*	FROM bas_income_info bas,
+						(SELECT	business_id,MIN(status) AS status FROM	bas_income_info	GROUP BY business_id) temp
+					WHERE bas.business_id = temp.business_id AND bas. status = temp. status	AND bas.business_type = '1'
+				) 	bas_income_info ON bas_income_info.business_id = bas_insurance.id
+		WHERE
+			bas_insurance. status = '1'
+			GROUP BY
+			bas_insurance.id
+		) bas_and_records_income
+		/*获取保险 end */
+
+        UNION ALL
+			/*其他 bas_air_trans_records bas_income_info*/
+			SELECT
+			/*id                  */						bas_bill.id,
+			/*票号/流水号         */						bas_bill.bill_no AS number,
+			/*业务类型 []         */						'4' AS business_type,
+			/*操作类型            */						bas_bill.bill_type, /*'账单类型（0-机票 01-机票历史订单 1-酒店 2-专车 3-保险）*/
+			/*结算方式 []         */						bas_bill.pay_type, /*付款方类型（0-企业 1-个人）*/
+			/*付款企业  hid          */
+			/*结账状态            */						bas_bill.bill_status + 2 AS bill_status, /*账单状态（0-新建 1-已提交 2-已核销*/
+			/*应收                */						'0.00' AS bill_amount,
+			/*实收                */						'0.00' AS bill_amount,
+			/*差额                */						'0.00' AS bill_amount,
+			/*操作人              */						bas_bill.create_by,
+			/*操作时间            */						bas_bill.create_date,
+			/*--公司id            */						bas_bill.settle_company_id,
+			/*--除标记            */						bas_bill.del_flag,
+			/*--修改时间          */						bas_bill.update_date,
+			/*--修改人            */						bas_bill.update_by,
+			/*--创建时间          */						bas_bill.create_date AS create_date1,
+			/*--操作序号          */						'' AS seq_num,
+			/*==操作类型==票状态（T-出票 R-退票 V-废票 TR-部分退票  RI-退票对账中 TI-部分退票对账中）*/						'其他' AS trans_status,
+			/*--录入者            */						bas_bill.create_by AS blmaker,
+			/*--旅客              */						'' AS passenger_name,
+			/*--旅客              */						bas_bill.service_charge,
+			/*--代理费            */		    	       '0.00' AS base_comm_amount
+			FROM
+				bas_bill
+
+		/*其他 end */
+
+
+		/*UNION ALL end  开始连接所有表 end*/
+	) selecttable
+	LEFT JOIN bas_company_info ON bas_company_info.id = selecttable.settle_company_id
+	LEFT JOIN bas_company_info bas_company_info_parent ON bas_company_info_parent.id = bas_company_info.parent_id
+	LEFT JOIN sys_user ON sys_user.id = selecttable.operate_by
+	LEFT JOIN sys_user_group ON sys_user_group.user_id = sys_user.id
+	LEFT JOIN sys_group ON sys_group.id = sys_user_group.group_id
+	WHERE selecttable.del_flag = 0
+	ORDER BY create_date DESC
+)
+/*集合结束 end*/
+t
+GROUP BY group_id,business_type
