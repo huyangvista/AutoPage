@@ -258,6 +258,9 @@ public class Win {
                 String profit = "";////////////////单张利润
                 String profit_percen = "";//////////////利润率
 
+                String ticket_type = "" + map.get("ticket_type"); //4国内2国际
+
+
                 long couInter = 0;
                 long couChina = 0;
                 long couIns = 0;
@@ -270,27 +273,31 @@ public class Win {
                 String business_type = "" + map.get("business_type");
                 //国内机票经营数据
                 switch (business_type) {
-                    case "0":
-                        couInter = find(list2,"4",group_name);
-                        couChina = find(list2,"4",group_name);
-                        couIns   = find(list2,"4",group_name);
-                        couHotel = find(list2,"4",group_name);
+                    case "0":  //机票
+                        if("4".equals(ticket_type)){
+                            couInter = find(list2,"4",group_name);
+                            couChina = find(list2,"4",group_name);
+                            couIns   = find(list2,"4",group_name);
+                            couHotel = find(list2,"4",group_name);
 
-                        count = "" + couChina;
-                        profit = "" + _difference_amount / couChina;
-                        sales_data = "国内机票经营数据";
-                        break;
-                    case "1":
-                        couInter = find(list2,"3",group_name);
-                        couChina = find(list2,"3",group_name);
-                        couIns   = find(list2,"3",group_name);
-                        couHotel = find(list2,"3",group_name);
+                            count = "" + couChina;
+                            profit = "" + _difference_amount / couChina;
+                            sales_data = "国内机票经营数据";
+                        }
+                        if("2".equals(ticket_type)){
+                            couInter = find(list2,"3",group_name);
+                            couChina = find(list2,"3",group_name);
+                            couIns   = find(list2,"3",group_name);
+                            couHotel = find(list2,"3",group_name);
 
-                        count = "" + couInter;
-                        profit = "" + _difference_amount / couInter;
-                        sales_data = "国际机票经营数据";
+                            count = "" + couInter;
+                            profit = "" + _difference_amount / couInter;
+                            sales_data = "国际机票经营数据";
+                        }
+
                         break;
-                    case "2":
+                    case "1": //保险
+
                         couInter = find(list2,"5",group_name);
                         couChina = find(list2,"5",group_name);
                         couIns   = find(list2,"5",group_name);
@@ -299,8 +306,11 @@ public class Win {
                         count = "" + couIns;
                         profit = "" + _difference_amount / couIns;
                         sales_data = "保险";
+
+
                         break;
-                    case "3":
+                    case "2": //酒店3
+
                         couInter = find(list2,"4",group_name);
                         couChina = find(list2,"4",group_name);
                         couIns   = find(list2,"4",group_name);
@@ -309,7 +319,15 @@ public class Win {
                         count = "" + couHotel;
                         profit = "" + _difference_amount / couHotel;
                         sales_data = "酒店";
+
                         break;
+                    case "3": //录入的机票2
+
+                        break;
+                    case "4": //OTHER
+
+                        break;
+
                     default:
                         break;
                 }

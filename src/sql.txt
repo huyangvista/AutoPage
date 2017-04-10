@@ -1,4 +1,5 @@
-SELECT 
+SELECT
+/*4国内2国际          */			ticket_type,
 /*区域	*/
 /*组别	*/group_name,
 /*国内张数*/
@@ -20,6 +21,7 @@ FROM
 sys_group.id AS  group_id ,
 
 sys_group.group_name,
+		/*4国内2国际          */			ticket_type,
 		/*id                  */			selecttable.id,
 		/*票号/流水号         */			selecttable.number,
 		/*业务类型 []         */			selecttable.business_type,
@@ -55,6 +57,7 @@ sys_group.group_name,
 		/*UNION ALL 开始连接所有表*/
 		/*获取机票 1 连接 bas_air_tktdata bas_and_records_income */
 		SELECT
+			/*4国内2国际          */			bas_air_tktdata.ticket_type,
 			/*id                  */			bas_and_records_income.id,
 			/*票号/流水号         */			CONCAT(bas_air_tktdata.cair,'-',bas_air_tktdata.ticket_number) AS number,
 			/*业务类型 []         */			'0' AS business_type,
@@ -76,7 +79,7 @@ sys_group.group_name,
 			/*==操作类型==票状态（T-出票 R-退票 V-废票 TR-部分退票  RI-退票对账中 TI-部分退票对账中）*/			bas_and_records_income.ticket_status,
 			/*--录入者            */			bas_air_tktdata.create_by AS blmaker,
 			/*--旅客              */			bas_air_tktdata.passenger_name,
-												/*--旅客              */						 '0.00' AS bill_amount,
+				/*--旅客              */						 '0.00' AS bill_amount,
 			/*--代理费            */			bas_and_records_income.base_comm_amount
 
 		FROM
@@ -129,6 +132,7 @@ sys_group.group_name,
 		UNION ALL
 		/*录入的机票2 连接 bas_air_tktdata bas_and_records_income */
 		SELECT
+			/*4国内2国际          */			   "" AS ticket_type,
 			/*id                  */				bas_and_records_income.id,
 			/*票号/流水号         */				bas_air_purchase.purchase_no AS number,
 			/*业务类型 []         */				'3' AS business_type,
@@ -199,6 +203,7 @@ sys_group.group_name,
 		UNION ALL
 		/*酒店3 bas_hotel_purchase bas_and_records_income */
 		SELECT
+			/*4国内2国际          */			   "" AS ticket_type,
 			/*id                  */					bas_and_records_income.id,
 			/*票号/流水号         */					bas_hotel_purchase.purchase_no AS number,
 			/*业务类型 []         */					'2' AS business_type,
@@ -267,6 +272,7 @@ sys_group.group_name,
 		UNION ALL
 		/*获取保险 4 连接 bas_air_tktdata bas_and_records_income */
 		SELECT
+			/*4国内2国际          */			   "" AS ticket_type,
 			/*id                  */						bas_and_records_income.id,
 			/*票号/流水号         */						bas_and_records_income.pol_id AS number,
 			/*业务类型 []         */						'1' AS business_type,
@@ -334,6 +340,7 @@ sys_group.group_name,
         UNION ALL
 			/*其他 bas_air_trans_records bas_income_info*/
 			SELECT
+			/*4国内2国际          */			   "" AS ticket_type,
 			/*id                  */						bas_bill.id,
 			/*票号/流水号         */						bas_bill.bill_no AS number,
 			/*业务类型 []         */						'4' AS business_type,
