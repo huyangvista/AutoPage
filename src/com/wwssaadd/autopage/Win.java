@@ -173,49 +173,7 @@ public class Win {
 
 
         button4.addActionListener(e -> {
-            mySql.exeQ(MySqlString.showTables());
-            java.util.List<Map<String, Object>> list = mySql.getParms();
-            String[] tabNames = new String[list.size()];
-            for (int i = 0; i < list.size(); i++) {
-                Map<String, Object> map = list.get(i);
-                Iterator<Map.Entry<String, Object>> iterator = map.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    Map.Entry<String, Object> next = iterator.next();
-                    //System.out.println(next.getValue());
-                    tabNames[i] = next.getValue().toString();
-                }
-            }
-
-
-            for (int i = 0; i < tabNames.length; i++) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("package demo;");
-                sb.append("\r\n");
-                sb.append("\r\n");
-                sb.append("import vdll.data.msql.AISql;");
-                sb.append("\r\n");
-                sb.append("\r\n");
-                sb.append("public class " + tabNames[i] + "{");
-                sb.append("\r\n");
-                sb.append("\r\n");
-                mySql.exeQ(MySqlString.showColumn(tabNames[i], mySql.getDatabaseName()));
-                list = mySql.getParms();
-                for (int j = 0; j < list.size(); j++) {
-                    Map<String, Object> map = list.get(j);
-                    Iterator<Map.Entry<String, Object>> iterator = map.entrySet().iterator();
-                    while (iterator.hasNext()) {
-                        Map.Entry<String, Object> next = iterator.next();
-                        //System.out.println(next.getValue());
-
-                        sb.append("@AISql public String " + next.getValue() + ";");
-                        sb.append("\r\n");
-                    }
-                }
-                sb.append("\r\n");
-                sb.append("}");
-                FileOperate.createFile("src/demo/" + tabNames[i] + ".java", sb.toString());
-                //System.out.println(sb.toString());
-            }
+            MySqlString.CreateDemo(mySql);
             System.out.println("build demo finish");
         });
 
@@ -226,157 +184,260 @@ public class Win {
 //                System.out.println(item.id);
 //            }
 
-            String s = FileOperate.readTxt("src/sql.txt", "utf-8");
-            mySql.exeQ(s);
-            java.util.List<Map<String, Object>> list = mySql.getParms();
-            ParmsUtil.setListParmsRep(list, new Object[][]{
+            MySqlBuild<bas_bi_summary> msb = new MySqlBuild<>(bas_bi_summary.class, "bas_bi_summary", mySql);
+            Object[][] replace = new Object[][]{
                     {ParmsUtil.EListParmsRep.clone, "group_name", "group_name_zone"},
                     {ParmsUtil.EListParmsRep.replace, "group_name_zone",
                             "赖金兰组", "李莹", "李莹组", "李莹",
                             "康莹组", "刘晓静", "侯佳音组", "刘晓静",
                             "杜鹃组", "杜鹃", "高燕组", "杜鹃", "北京", "杜鹃"},
                     {}
-            });
+            };
+
+            String s = FileOperate.readTxt("src/sql.txt", "utf-8");
+            mySql.exeQ(s);
+            java.util.List<Map<String, Object>> list = mySql.getParms();
+            ParmsUtil.setListParmsRep(list, replace);
             s = FileOperate.readTxt("src/sql2.txt", "utf-8");
             mySql.exeQ(s);
+
             java.util.List<Map<String, Object>> list2 = mySql.getParms();
+            s = FileOperate.readTxt("src/sqls/sql.txt", "utf-8");
+            mySql.exeQ(s);
+            java.util.List<Map<String, Object>> listTkt = mySql.getParms();
+            s = FileOperate.readTxt("src/sqls/sql1.txt", "utf-8");
+            mySql.exeQ(s);
+            java.util.List<Map<String, Object>> listHot = mySql.getParms();
+            s = FileOperate.readTxt("src/sqls/sql2.txt", "utf-8");
+            mySql.exeQ(s);
+            java.util.List<Map<String, Object>> listIns = mySql.getParms();
+            ParmsUtil.setListParmsRep(listTkt, replace);
+            ParmsUtil.setListParmsRep(listHot, replace);
+            ParmsUtil.setListParmsRep(listIns, replace);
 
-            for (int i = 0; i < list.size(); i++) {
-                Map<String, Object> map = list.get(i);
-                Iterator<Map.Entry<String, Object>> iterator = map.entrySet().iterator();
+            {
+                for (int i = 0; i < listTkt.size(); i++) {
+                    Map<String, Object> map = listTkt.get(i);
+                    String namespace = getMap(map, "group_name_zone");//区域
+                    String group_name = getMap(map,"group_name");  //组
+                    String sales_data = "";   //////////////国内机票经营数据
+                    //number
+                    String count = ""; //////////////国内张数
+                    String sales_amount = getMap(map,"total_price_sum");  //销售额
+                    String comm_amount = getMap(map,"base_comm_amount_sum"); //代理费
+                    String difference_amount = getMap(map,"difference_amount_sum"); //差额
+                    String profit = "";////////////////单张利润
+                    String profit_percen = "";//////////////利润率
 
+                    String ticket_type = "" + map.get("ticket_type"); //4国内2国际
 
-                //str
-                String namespace = "" + map.get("group_name_zone");//区域
-                String group_name = "" + map.get("group_name");  //组
-                String sales_data = "";          /////////////国内机票经营数据
-                //number
-                String count = ""; //////////////国内张数
-                String sales_amount = "" + map.get("total_price_sum");  //销售额
-                String comm_amount = "" + map.get("base_comm_amount_sum"); //代理费
-                String difference_amount = "" + map.get("difference_amount_sum"); //差额
-                String profit = "";////////////////单张利润
-                String profit_percen = "";//////////////利润率
-
-                String ticket_type = "" + map.get("ticket_type"); //4国内2国际
-
-
-                long couInter = 0;
-                long couChina = 0;
-                long couIns = 0;
-                long couHotel = 0;
-
-                double _sales_amount = Double.parseDouble(sales_amount);
-                double _difference_amount = Double.parseDouble(difference_amount);
-                profit_percen = "" + _difference_amount / _sales_amount;
-
-                String business_type = "" + map.get("business_type");
-                //国内机票经营数据
-                switch (business_type) {
-                    case "0":  //机票
-                        if("4".equals(ticket_type)){
-                            couInter = find(list2,"4",group_name);
-                            couChina = find(list2,"4",group_name);
-                            couIns   = find(list2,"4",group_name);
-                            couHotel = find(list2,"4",group_name);
-
-                            count = "" + couChina;
-                            profit = "" + _difference_amount / couChina;
-                            sales_data = "国内机票经营数据";
-                        }
-                        if("2".equals(ticket_type)){
-                            couInter = find(list2,"3",group_name);
-                            couChina = find(list2,"3",group_name);
-                            couIns   = find(list2,"3",group_name);
-                            couHotel = find(list2,"3",group_name);
-
-                            count = "" + couInter;
-                            profit = "" + _difference_amount / couInter;
-                            sales_data = "国际机票经营数据";
-                        }
-
-                        break;
-                    case "1": //保险
-
-                        couInter = find(list2,"5",group_name);
-                        couChina = find(list2,"5",group_name);
-                        couIns   = find(list2,"5",group_name);
-                        couHotel = find(list2,"5",group_name);
-
-                        count = "" + couIns;
-                        profit = "" + _difference_amount / couIns;
-                        sales_data = "保险";
+                    long couInter = 0;
+                    long couChina = 0;
+                    long couIns = 0;
+                    long couHotel = 0;
+                    double _sales_amount = Double.parseDouble(sales_amount.equals("")?"0":sales_amount);
+                    double _difference_amount = Double.parseDouble(difference_amount.equals("")?"0":difference_amount);
+                    if(_sales_amount != 0) profit_percen = "" + _difference_amount / _sales_amount;
 
 
-                        break;
-                    case "2": //酒店3
-
-                        couInter = find(list2,"4",group_name);
+                    if("4".equals(ticket_type)){
                         couChina = find(list2,"4",group_name);
-                        couIns   = find(list2,"4",group_name);
-                        couHotel = find(list2,"4",group_name);
+                        count = "" + couChina;
+                        if(couChina != 0)profit = "" + _difference_amount / couChina;
+                        sales_data = "国内机票经营数据";
+                    }
+                    if("2".equals(ticket_type)){
+                        couInter = find(list2,"2",group_name);
+                        count = "" + couInter;
+                        if(couInter != 0)profit = "" + _difference_amount / couInter;
+                        sales_data = "国际机票经营数据";
+                    }
 
-                        count = "" + couHotel;
-                        profit = "" + _difference_amount / couHotel;
-                        sales_data = "酒店";
-
-                        break;
-                    case "3": //录入的机票2
-
-                        break;
-                    case "4": //OTHER
-
-                        break;
-
-                    default:
-                        break;
+                    bas_bi_summary bbs = new bas_bi_summary();
+                    bbs.namespace = namespace;
+                    bbs.group_name = group_name;
+                    bbs.sales_data = sales_data;
+                    bbs.count = count;
+                    bbs.sales_amount = sales_amount;
+                    bbs.comm_amount = comm_amount;
+                    bbs.difference_amount = difference_amount;
+                    bbs.profit = profit;
+                    bbs.profit_percen = profit_percen;
+                    vbean(bbs);
+                    msb.add(bbs);
                 }
-                bas_bi_summary bbs = new bas_bi_summary();
-                bbs.namespace = namespace;
-                bbs.group_name = group_name;
-                bbs.sales_data = sales_data;
-                bbs.count = count;
-                bbs.sales_amount = sales_amount;
-                bbs.comm_amount = comm_amount;
-                bbs.difference_amount = difference_amount;
-                bbs.profit = profit;
-                bbs.profit_percen = profit_percen;
-
-                if (bbs.namespace.trim().equals("") || bbs.namespace.trim().equals("null")) {
-                    bbs.namespace = null;
-                }
-                if (bbs.group_name.trim().equals("") || bbs.group_name.trim().equals("null")) {
-                    bbs.group_name = null;
-                }
-                if (bbs.sales_data.trim().equals("") || bbs.sales_data.trim().equals("null")) {
-                    bbs.sales_data = null;
-                }
-
-                if (bbs.count.trim().equals("")) {
-                    bbs.count = null;
-                }
-                if (bbs.sales_amount.trim().equals("")) {
-                    bbs.sales_amount = null;
-                }
-                if (bbs.comm_amount.trim().equals("")) {
-                    bbs.comm_amount = null;
-                }
-                if (bbs.difference_amount.trim().equals("")) {
-                    bbs.difference_amount = null;
-                }
-                if (bbs.profit.trim().equals("")) {
-                    bbs.profit = null;
-                }
-                if (bbs.profit_percen.trim().equals("") || bbs.profit_percen.trim().equals("NaN")) {
-                    bbs.profit_percen = null;
-                }
-
-                MySqlBuild<bas_bi_summary> msb = new MySqlBuild<bas_bi_summary>(bas_bi_summary.class, "bas_bi_summary", mySql);
-                msb.add(bbs);
-
-                System.out.println(DemoUtil.toString(bbs));
-
             }
+
+            {
+                for (int i = 0; i < listHot.size(); i++) {
+                    Map<String, Object> map = listHot.get(i);
+                    String namespace = getMap(map, "group_name_zone");//区域
+                    String group_name = getMap(map,"group_name");  //组
+                    String sales_data = "";   //////////////国内机票经营数据
+                    //number
+                    String count = ""; //////////////国内张数
+                    String sales_amount = getMap(map,"total_price_sum");  //销售额
+                    String comm_amount = getMap(map,"base_comm_amount_sum"); //代理费
+                    String difference_amount = getMap(map,"difference_amount_sum"); //差额
+                    String profit = "";////////////////单张利润
+                    String profit_percen = "";//////////////利润率
+
+
+                    long couInter = 0;
+                    long couChina = 0;
+                    long couIns = 0;
+                    long couHotel = 0;
+                    double _sales_amount = Double.parseDouble(sales_amount.equals("")?"0":sales_amount);
+                    double _difference_amount = Double.parseDouble(difference_amount.equals("")?"0":difference_amount);
+                    if(_sales_amount != 0) profit_percen = "" + _difference_amount / _sales_amount;
+
+                     couHotel = find(list2,"5",group_name);
+                     count = "" + couHotel;
+                    if(couHotel != 0) profit = "" + _difference_amount / couHotel;
+                     sales_data = "酒店";
+
+                    bas_bi_summary bbs = new bas_bi_summary();
+                    bbs.namespace = namespace;
+                    bbs.group_name = group_name;
+                    bbs.sales_data = sales_data;
+                    bbs.count = count;
+                    bbs.sales_amount = sales_amount;
+                    bbs.comm_amount = comm_amount;
+                    bbs.difference_amount = difference_amount;
+                    bbs.profit = profit;
+                    bbs.profit_percen = profit_percen;
+                    vbean(bbs);
+                    msb.add(bbs);
+                }
+            }
+
+            {
+                for (int i = 0; i < listIns.size(); i++) {
+                    Map<String, Object> map = listIns.get(i);
+                    String namespace = getMap(map, "group_name_zone");//区域
+                    String group_name = getMap(map,"group_name");  //组
+                    String sales_data = "";   //////////////国内机票经营数据
+                    //number
+                    String count = ""; //////////////国内张数
+                    String sales_amount = getMap(map,"total_price_sum");  //销售额
+                    String comm_amount = getMap(map,"base_comm_amount_sum"); //代理费
+                    String difference_amount = getMap(map,"difference_amount_sum"); //差额
+                    String profit = "";////////////////单张利润
+                    String profit_percen = "";//////////////利润率
+
+                    long couInter = 0;
+                    long couChina = 0;
+                    long couIns = 0;
+                    long couHotel = 0;
+                    double _sales_amount = Double.parseDouble(sales_amount.equals("")?"0":sales_amount);
+                    double _difference_amount = Double.parseDouble(difference_amount.equals("")?"0":difference_amount);
+                    if(_sales_amount != 0) profit_percen = "" + _difference_amount / _sales_amount;
+
+
+                    couIns   = find(list2,"6",group_name);
+                    count = "" + couIns;
+                    if(couIns != 0)  profit = "" + _difference_amount / couIns;
+                    sales_data = "保险";
+
+                    bas_bi_summary bbs = new bas_bi_summary();
+                    bbs.namespace = namespace;
+                    bbs.group_name = group_name;
+                    bbs.sales_data = sales_data;
+                    bbs.count = count;
+                    bbs.sales_amount = sales_amount;
+                    bbs.comm_amount = comm_amount;
+                    bbs.difference_amount = difference_amount;
+                    bbs.profit = profit;
+                    bbs.profit_percen = profit_percen;
+                    vbean(bbs);
+                    msb.add(bbs);
+                }
+            }
+
+
+
+//            for (int i = 0; i < list.size(); i++) {
+//                Map<String, Object> map = list.get(i);
+//                Iterator<Map.Entry<String, Object>> iterator = map.entrySet().iterator();
+//                //st
+//                //
+//                // r
+//                String namespace = "" + map.get("group_name_zone");//区域
+//                String group_name = "" + map.get("group_name");  //组
+//                String sales_data = "";          /////////////国内机票经营数据
+//                //number
+//                String count = ""; //////////////国内张数
+//                String sales_amount = "" + map.get("total_price_sum");  //销售额
+//                String comm_amount = "" + map.get("base_comm_amount_sum"); //代理费
+//                String difference_amount = "" + map.get("difference_amount_sum"); //差额
+//                String profit = "";////////////////单张利润
+//                String profit_percen = "";//////////////利润率
+//
+//                String ticket_type = "" + map.get("ticket_type"); //4国内2国际
+//
+//
+//                long couInter = 0;
+//                long couChina = 0;
+//                long couIns = 0;
+//                long couHotel = 0;
+//
+//                double _sales_amount = Double.parseDouble(sales_amount);
+//                double _difference_amount = Double.parseDouble(difference_amount);
+//                profit_percen = "" + _difference_amount / _sales_amount;
+//
+//                String business_type = "" + map.get("business_type");
+//                //国内机票经营数据
+//                switch (business_type) {
+//                    case "0":  //机票
+//                        if("4".equals(ticket_type)){
+//                            couChina = find(list2,"4",group_name);
+//                            count = "" + couChina;
+//                            profit = "" + _difference_amount / couChina;
+//                            sales_data = "国内机票经营数据";
+//                        }
+//                        if("2".equals(ticket_type)){
+//                            couInter = find(list2,"3",group_name);
+//                            count = "" + couInter;
+//                            profit = "" + _difference_amount / couInter;
+//                            sales_data = "国际机票经营数据";
+//                        }
+//                        break;
+//                    case "1": //保险
+//                        couIns   = find(list2,"5",group_name);
+//                        count = "" + couIns;
+//                        profit = "" + _difference_amount / couIns;
+//                        sales_data = "保险";
+//                        break;
+//                    case "2": //酒店3
+//                        couHotel = find(list2,"4",group_name);
+//                        count = "" + couHotel;
+//                        profit = "" + _difference_amount / couHotel;
+//                        sales_data = "酒店";
+//                        break;
+//                    case "3": //录入的机票2
+//
+//                        break;
+//                    case "4": //OTHER
+//
+//                        break;
+//
+//                    default:
+//                        break;
+//                }
+//                bas_bi_summary bbs = new bas_bi_summary();
+//                bbs.namespace = namespace;
+//                bbs.group_name = group_name;
+//                bbs.sales_data = sales_data;
+//                bbs.count = count;
+//                bbs.sales_amount = sales_amount;
+//                bbs.comm_amount = comm_amount;
+//                bbs.difference_amount = difference_amount;
+//                bbs.profit = profit;
+//                bbs.profit_percen = profit_percen;
+//                vbean(bbs);
+//                msb.add(bbs);
+//                System.out.println(DemoUtil.toString(bbs));
+//            }
         });
 
         button6.addActionListener(e -> {
@@ -543,5 +604,46 @@ public class Win {
             }
         }
         return l;
+    }
+
+    public void vbean(bas_bi_summary bbs){
+        if (bbs.namespace.trim().equals("") ) {
+            bbs.namespace = null;
+        }
+        if (bbs.group_name.trim().equals("") ) {
+            bbs.group_name = null;
+        }
+        if (bbs.sales_data.trim().equals("")) {
+            bbs.sales_data = null;
+        }
+
+        if (bbs.count.trim().equals("")) {
+            bbs.count = null;
+        }
+        if (bbs.sales_amount.trim().equals("")) {
+            bbs.sales_amount = null;
+        }
+        if (bbs.comm_amount.trim().equals("")) {
+            bbs.comm_amount = null;
+        }
+        if (bbs.difference_amount.trim().equals("")) {
+            bbs.difference_amount = null;
+        }
+        if ("".equals(bbs.profit.trim()) ) {
+            bbs.profit = null;
+        }
+        if (bbs.profit_percen.trim().equals("") ) {
+            bbs.profit_percen = null;
+        }
+    }
+
+    public String getMap(Map<String, Object> map, String key){
+        if(map.containsKey(key)){
+            Object v = map.get(key);
+            if(v != null){
+                return v.toString();
+            }
+        }
+        return "";
     }
 }

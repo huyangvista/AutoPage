@@ -1,18 +1,26 @@
 
-SELECT COUNT(*) AS cou,ticket_type AS type  ,sys_group.group_name
+/*SELECT COUNT(*) AS cou,ticket_type AS type  ,sys_group.group_name
 FROM bas_air_tktdata
 LEFT JOIN (SELECT * FROM bas_air_trans_records GROUP BY bas_air_trans_records.tkt_id)bas_air_trans_records ON bas_air_trans_records.tkt_id = bas_air_tktdata.id
 LEFT JOIN (SELECT sys_user.id,sys_group.group_name FROM sys_user LEFT JOIN sys_user_group on sys_user.id = sys_user_group.user_id LEFT JOIN sys_group ON sys_group.id = sys_user_group.group_id)sys_group on sys_group.id = bas_air_trans_records.operate_by
 WHERE bas_air_tktdata.ticket_status = 'T' AND bas_air_tktdata.del_flag = 0
-GROUP BY type,sys_group.group_name
+GROUP BY type,sys_group.group_name*/
+
+
+SELECT COUNT(*) AS count,ticket_type AS type  ,sys_group.group_name, sys_group.group_id
+FROM bas_air_tktdata
+LEFT JOIN (SELECT sys_user.id AS user_id,sys_group.id AS group_id, sys_group.group_name,sys_user.`name` AS user_name FROM sys_user LEFT JOIN sys_user_group on sys_user.id = sys_user_group.user_id LEFT JOIN sys_group ON sys_group.id = sys_user_group.group_id)sys_group on sys_group.user_id = bas_air_tktdata.create_by
+WHERE  bas_air_tktdata.del_flag = 0
+GROUP BY type,sys_group.group_id
 
 UNION ALL
-SELECT COUNT(0) AS cou, '5' AS type ,sys_group.group_name
-FROM bas_insurance
-LEFT JOIN (SELECT sys_user.id,sys_group.group_name FROM sys_user LEFT JOIN sys_user_group on sys_user.id = sys_user_group.user_id LEFT JOIN sys_group ON sys_group.id = sys_user_group.group_id)sys_group on sys_group.id = bas_insurance.create_by    WHERE bas_insurance.del_flag = 0
+SELECT Count(0) AS cou, '5' AS type , sys_group.group_name
+FROM bas_hotel_purchase  LEFT JOIN (SELECT sys_user.id,sys_group.group_name FROM sys_user LEFT JOIN sys_user_group on sys_user.id = sys_user_group.user_id LEFT JOIN sys_group ON sys_group.id = sys_user_group.group_id)sys_group on sys_group.id = bas_hotel_purchase.create_by
+WHERE del_flag = 0
 GROUP BY sys_group.group_name
 
 UNION ALL
-SELECT Count(0) AS cou, '6' AS type , sys_group.group_name
-FROM bas_hotel_purchase  LEFT JOIN (SELECT sys_user.id,sys_group.group_name FROM sys_user LEFT JOIN sys_user_group on sys_user.id = sys_user_group.user_id LEFT JOIN sys_group ON sys_group.id = sys_user_group.group_id)sys_group on sys_group.id = bas_hotel_purchase.create_by   WHERE del_flag = 0
+SELECT COUNT(0) AS cou, '6' AS type ,sys_group.group_name
+FROM bas_insurance
+LEFT JOIN (SELECT sys_user.id,sys_group.group_name FROM sys_user LEFT JOIN sys_user_group on sys_user.id = sys_user_group.user_id LEFT JOIN sys_group ON sys_group.id = sys_user_group.group_id)sys_group on sys_group.id = bas_insurance.create_by    WHERE bas_insurance.del_flag = 0
 GROUP BY sys_group.group_name
