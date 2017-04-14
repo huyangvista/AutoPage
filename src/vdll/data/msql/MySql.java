@@ -59,7 +59,6 @@ public class MySql
 	{
 		try
 		{
-			
 			Class.forName("com.mysql.jdbc.Driver");
 		}
 		catch (ClassNotFoundException e)
@@ -79,7 +78,6 @@ public class MySql
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -130,7 +128,7 @@ public class MySql
 		}
 		return pst;
 	}
-	//1 -> 3.0
+	//1 -> 3.0 读取数据后关闭
 	public ResultSet exeQ(String sql)
 	{
 		try
@@ -181,7 +179,7 @@ public class MySql
 		}
 		return vb;
 	}
-	//2 -> 3.0
+	//2 -> 3.0 读取数据后关闭
 	public ResultSet exeQ()
 	{
 		try
@@ -327,7 +325,6 @@ public class MySql
 				String colName = md.getColumnName(i);
 				cols[i - 1] = colName;
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

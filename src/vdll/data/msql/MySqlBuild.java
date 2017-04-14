@@ -207,6 +207,7 @@ public class MySqlBuild<T> extends MySql {
 				}			
 				list.add(vu);
 			}
+			rs.close();
 		}
 		catch (Exception e) {
 			//e.printStackTrace();

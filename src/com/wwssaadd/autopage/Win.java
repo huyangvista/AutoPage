@@ -1,12 +1,10 @@
 package com.wwssaadd.autopage;
 
 import demo.bas_bi_summary;
+import vdll.data.dbc.DBCP;
 import vdll.data.msql.MySqlBuild;
 import vdll.tools.CompareUtil;
-import vdll.utils.DemoUtil;
-import vdll.utils.FileOperate;
-import vdll.utils.ParmsUtil;
-import vdll.utils.Tools;
+import vdll.utils.*;
 import vdll.data.msql.MySql;
 import vdll.data.msql.MySqlString;
 
@@ -447,12 +445,12 @@ public class Win {
         });
         button7.addActionListener(e -> {
 
-            DBManager.load();
+            //DBCP.load();
             long begin=System.currentTimeMillis();
             for(int i=0;i<100;i++){
-                Connection conn=DBManager.getConn();
+                Connection conn=DBCP.getConn();
                 System.out.print(i+"   ");
-                DBManager.closeConn(conn);
+                DBCP.closeConn(conn);
             }
             long end=System.currentTimeMillis();
             System.out.println("用时："+(end-begin));
