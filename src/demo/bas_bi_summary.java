@@ -12,6 +12,8 @@ public class bas_bi_summary{
 @AISql public String sales_amount;
 @AISql public String comm_amount;
 @AISql public String difference_amount;
+@AISql public String other_charge;
+@AISql public String gross_profit;
 @AISql public String profit;
 @AISql public String profit_percen;
 @AISql public String record_date;

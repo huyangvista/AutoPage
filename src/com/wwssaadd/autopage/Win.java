@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.sql.Connection;
 import java.util.*;
 
 
@@ -37,6 +38,7 @@ public class Win {
     private JButton button4;
     private JButton button5;
     private JButton button6;
+    private JButton button7;
 
     MySql mySql = new MySql();
 
@@ -442,6 +444,22 @@ public class Win {
 
         button6.addActionListener(e -> {
 
+        });
+        button7.addActionListener(e -> {
+
+            DBManager.load();
+            long begin=System.currentTimeMillis();
+            for(int i=0;i<100;i++){
+                Connection conn=DBManager.getConn();
+                System.out.print(i+"   ");
+                DBManager.closeConn(conn);
+            }
+            long end=System.currentTimeMillis();
+            System.out.println("用时："+(end-begin));
+
+            System.out.println((-1 >>> 10));
+
+            System.out.printf("The product of both numbers is: ");
         });
     }
 
