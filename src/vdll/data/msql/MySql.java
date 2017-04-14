@@ -1,5 +1,7 @@
 package vdll.data.msql;
 
+import vdll.data.dbc.DBCP;
+
 import java.io.Console;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -87,6 +89,11 @@ public class MySql
 	{
 		// TODO Auto-generated constructor stub
 
+	}
+
+	public Connection openDBCP()
+	{
+		return DBCP.getConn();
 	}
 	//0 -> 1
 	public Connection open()
@@ -242,6 +249,7 @@ public class MySql
 			}
 			if (conn != null)
 			{
+				conn.setAutoCommit(true); //连接池需要
 				conn.close();
 			}
 		}

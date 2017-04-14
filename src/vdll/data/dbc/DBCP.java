@@ -1,4 +1,4 @@
-package com.wwssaadd.autopage;
+package vdll.data.dbc;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -8,55 +8,36 @@ import javax.sql.DataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.dbcp.*;
-import java.io.*;
 //import org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory;
+
 /**
+ * java 数据库连接池
  * tomcat数据库连接池管理类<br>
  * 使用为tomcat部署环境<br>
  * 需要在类路径下准备数据库连接配置文件dbcp.properties
- * 
- * @author 宋信强
- * @mail songxinqiang123@gmail.com
- * 
- * @time 2013-12-27
- * 
+ * Created by Hocean on 2017/4/14.
  */
-public class DBManager {
-	private static final Log log = LogFactory.getLog(DBManager.class);
+public class DBCP {
+	private static final Log log = LogFactory.getLog(DBCP.class);
 	private static final String configFile = "dbcp.properties";
 	private static DataSource dataSource;
 	static {
-		Properties dbProperties = new Properties();
-		try {
-			dbProperties.load(DBManager.class.getClassLoader().getResourceAsStream(configFile));
-			dataSource = BasicDataSourceFactory.createDataSource(dbProperties);
-			Connection conn = getConn();
-			DatabaseMetaData mdm = conn.getMetaData();
-			log.info("Connected to " + mdm.getDatabaseProductName() + " " + mdm.getDatabaseProductVersion());
-			if (conn != null) {
-				conn.close();
-			}
-		} catch (Exception e) {
-			log.error("初始化连接池失败：" + e);
-		}
+		load();
 	}
-	private DBManager() {
+	private DBCP() {
+
 	}
 	
-	
-	public static void load(){
+	protected static void load(){
 		Properties dbProperties = new Properties();
 		try {
-			dbProperties.load(DBManager.class.getClassLoader().getResourceAsStream(configFile));
+			dbProperties.load(DBCP.class.getClassLoader().getResourceAsStream(configFile));
 			//dbProperties.load(new FileReader("/mnt/sdcard/"+configFile));
 			dataSource = BasicDataSourceFactory.createDataSource(dbProperties);
 			Connection conn = getConn();
 			DatabaseMetaData mdm = conn.getMetaData();
-			log.info("Connected to " + mdm.getDatabaseProductName() + " "
-					 + mdm.getDatabaseProductVersion());
-			if (conn != null) {
-				conn.close();
-			}
+			log.info("Connected to " + mdm.getDatabaseProductName() + " " + mdm.getDatabaseProductVersion());
+			conn.close();
 		} catch (Exception e) {
 			log.error("初始化连接池失败：" + e);
 		}
@@ -64,10 +45,10 @@ public class DBManager {
 	/**
 	 * 获取链接，用完后记得关闭
 	 * 
-	 * @see {@link DBManager#closeConn(Connection)}
+	 * @see {@link DBCP#closeConn(Connection)}
 	 * @return
 	 */
-	public static final Connection getConn() {
+	public static Connection getConn() {
 		Connection conn = null;
 		try {
 			conn = dataSource.getConnection();
