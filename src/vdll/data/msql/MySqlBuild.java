@@ -151,8 +151,8 @@ public class MySqlBuild<T> extends MySql {
 	 * -1 失败  1成功 -2已存在
 	 * @return
 	 */
-	public int createDB() {
-		if (existDB()) return -2;
+	public int createDB(String databaseName) {
+		if (existDB(databaseName)) return -2;
 
 		int res = -1;
 		String sql = "CREATE DATABASE " + databaseName + " DEFAULT CHARSET=utf8;"; //创建语句
@@ -289,10 +289,10 @@ public class MySqlBuild<T> extends MySql {
 	 * 是否存在数据库
 	 * @return
 	 */
-	public boolean existDB() {
+	public boolean existDB(String databaseName) {
 		//boolean exist = false;
 
-		String sql = existSqlDB();
+		String sql = existSqlDB(databaseName);
 		sql(sql);
 		/*try
 		{
@@ -463,7 +463,7 @@ public class MySqlBuild<T> extends MySql {
 	 * 是否存在数据库
 	 * @return
 	 */
-	public String existSqlDB() {
+	public String existSqlDB(String databaseName) {
 		String sql = String.format("SHOW CREATE DATABASE  `%s`", databaseName);
 		return sql;
 	}  

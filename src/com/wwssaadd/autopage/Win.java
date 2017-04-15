@@ -448,9 +448,9 @@ public class Win {
             //DBCP.load();
             long begin=System.currentTimeMillis();
             for(int i=0;i<100;i++){
-                Connection conn=DBCP.getConn();
+                Connection conn=DBCP.open();
                 System.out.print(i+"   ");
-                DBCP.closeConn(conn);
+                DBCP.close(conn);
             }
             long end=System.currentTimeMillis();
             System.out.println("用时："+(end-begin));
