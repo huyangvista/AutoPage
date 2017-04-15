@@ -1,15 +1,6 @@
-package vdll.tools.fileobj;
+package vdll.tools;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 //import java.util.Base64;  //Vive  Java1.8 使用
@@ -20,13 +11,55 @@ import java.util.ArrayList;
  *
  * @param <T> 自定义的用户对象 需要implements Serializable
  */
-public class VFiles<T>
+public class FilesObject<T>
 {
+	public static void main(String[] args)
+	{
+		//创建一个用户
+		VTestUser user = new VTestUser();
+		user.id = 10;
+		user.vname = "叶孤城";
+		user.sex = "男性";
+
+		//实例化数据文件 (<VUser>中  VUser可以换做你自己定义的用户类 但必须实例化接口  implements Serializable)
+		FilesObject<VTestUser> vfs = new FilesObject<VTestUser>("./test.txt"); // (./ 表示根目录)
+		//VFiles vfs = new VFiles("./test.txt"); // 不指定泛型
+		//添加用户到数据文件 需要手动保存  方法1
+		vfs.AddUser(user);
+		vfs.AddUser(user);
+		vfs.Save();
+		//添加用户到数据文件 并且保存  方法 2
+		vfs.AddUserSave(user);
+		//获取数据文件到 数据集
+		ArrayList<VTestUser> vUsers = vfs.GetUserAll();
+		//修改第一个数据集中的用户 id
+		vUsers.get(0).id = 999999;
+		//删除一个用户
+		vUsers.remove(1); // 等同于  vUsers.remove(vUsers.get(1));
+		//保存修改后的 数据   更改数据一定要保存
+		vfs.Save();
+		//删除数据文件
+		vfs.Delete();
+		//遍历所有用户数据
+		for (int i = 0; i < vUsers.size(); i++)
+		{
+			System.out.println("------> 用户: " + i);
+			VTestUser u = vUsers.get(i);
+			System.out.println(u.id);
+			System.out.println(u.vname);
+			System.out.println(u.sex);
+		}
+
+	}
+
+
+
+
 	private File file; //当前操作文件
 	public ArrayList<T> vusers; //当前操作的 数据集合
 
 	//构造文件操作类
-	public VFiles(String path)
+	public FilesObject(String path)
 	{
 		// TODO 锟皆讹拷锟斤拷锟缴的癸拷锟届函锟斤拷锟斤拷锟?
 		file = new File(path);
@@ -223,6 +256,20 @@ class VSerializable
 		//byte[] bytes = ObjectToByte(obj);
 		//return new String(bytes,Charset.defaultCharset());
 	}
+}
+
+
+ class VTestUser implements Serializable
+{
+	/**
+	 * 自动生成的序列化 ID
+	 */
+	private static final long serialVersionUID = -8703785453230843333L;
+
+	public String vname = "";
+	public String sex = "";
+	public int id = 0;
+
 }
 
 /*//演示代码

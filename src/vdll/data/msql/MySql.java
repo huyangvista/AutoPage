@@ -1,12 +1,10 @@
 package vdll.data.msql;
 
-import org.apache.poi.hssf.record.DrawingRecordForBiffViewer;
+import vdll.data.dbc.DBCN;
 import vdll.data.dbc.DBCP;
+import vdll.data.dbc.DBProp;
+import vdll.data.dbc.IDB;
 
-import java.io.Console;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
 import java.util.*;
 
@@ -16,7 +14,7 @@ import java.util.*;
  * @author Hocean
  *         1打开  2设置 3执行 4关闭
  */
-public class MySql{
+public class MySql {
     public static void main(String[] args) {
         MySqlBuild<User> vmysqlbuild = new MySqlBuild<>(User.class); //实例 SQL 语句
         MySql vmsql = new MySql(); //实例 SQL 连接
@@ -62,25 +60,71 @@ public class MySql{
     private Connection conn = null; //连接
     private PreparedStatement pst = null; //预处理语句
     private ResultSet rs = null; //游标
+    public static DBProp dbProp = new DBProp();
+
+    private IDB idb;
+
+    static {
+        load();
+    }
+
+    public static void load() {
+        try {
+            dbProp.load();
+            Class.forName(dbProp.getDriverClassName());
+        } catch (Exception e) {
+        }
+    }
 
     //0
     public MySql() {
 
     }
 
+    public MySql(Connection conn) {
+        this.conn = conn;
+    }
+
+    public MySql(IDB idb) {
+        this.idb = idb;
+    }
+
+    public static MySql build() {
+        return new MySql();
+    }
+
+    public static MySql buildDBCP() {
+        return new MySql(new DBCP());
+    }
+
+    public static MySql buildDBCN() {
+        return new MySql(new DBCN());
+    }
+
     //0 -> 1
     public Connection open() {
-        conn = DBCP.open();
+        Connection conn = null;
+        if (idb == null) {
+            conn = open(dbProp.getUrl(), dbProp.getUsername(), dbProp.getPassword());
+        } else if (idb instanceof DBCP) {
+            conn = DBCP.open();
+        } else if (idb instanceof DBCN) {
+            conn = DBCN.open();
+        }
         return conn;
     }
+
     //0 -> 1
-//    public Connection openFloat()
-//    {
-//        return openFloat(databaseUrl, databaseName,username,password);
-//    }
-    //0 -> 1
-    public Connection openFloat(String databaseUrl, String databaseName, String username, String password) {
-        // TODO Auto-generated method stub
+    public Connection open(String url, String username, String password) {
+        try {
+            conn = DriverManager.getConnection(url, username, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return conn;
+    }
+
+    public Connection open(String databaseUrl, String databaseName, String username, String password) {
         //String url = "jdbc:mysql://localhost:3306/" + databaseName + "?useUnicode=true&characterEncoding=utf8";
         String url = "jdbc:mysql://" + databaseUrl + "/" + databaseName + "?useUnicode=true&characterEncoding=utf8";
         try {

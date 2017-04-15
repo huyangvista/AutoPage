@@ -1,4 +1,4 @@
-package vdll.tools.fileobj;
+package vdll.tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

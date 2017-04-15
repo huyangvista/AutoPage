@@ -16,29 +16,29 @@ import java.util.UUID;
 
 /**
  * 
- * �ϴ�������
+ * ?????????
  * @author spring sky
  * Email:vipa1888@163.com
  * QQ:840950105
- * MyName:ʯ����
+ * MyName:?????
  */
 public class UploadUtil
 {
     private static final String TAG = "uploadFile";
-    private static final int TIME_OUT = 100 * 1000;   //��ʱʱ��
-    private static final String CHARSET = "utf-8"; //���ñ���
+    private static final int TIME_OUT = 100 * 1000;   //??????
+    private static final String CHARSET = "utf-8"; //???????
     /**
-     * android�ϴ��ļ���������
-     * @param file  ��Ҫ�ϴ����ļ�
-     * @param RequestURL  �����rul
-     * @return  ������Ӧ������
+     * android??????????????
+     * @param file  ???????????
+     * @param RequestURL  ?????rul
+     * @return  ?????????????
      */
     public static String uploadFile(File file, String RequestURL)
     {
         String result = null;
-        String  BOUNDARY =  UUID.randomUUID().toString();  //�߽��ʶ   ������
+        String  BOUNDARY =  UUID.randomUUID().toString();  //?????   ??????
         String PREFIX = "--" , LINE_END = "\r\n"; 
-        String CONTENT_TYPE = "multipart/form-data";   //��������
+        String CONTENT_TYPE = "multipart/form-data";   //????????
 
         try
 		{
@@ -46,11 +46,11 @@ public class UploadUtil
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(TIME_OUT);
             conn.setConnectTimeout(TIME_OUT);
-            conn.setDoInput(true);  //����������
-            conn.setDoOutput(true); //���������
-            conn.setUseCaches(false);  //������ʹ�û���
-            conn.setRequestMethod("POST");  //����ʽ
-            conn.setRequestProperty("Charset", CHARSET);  //���ñ���
+            conn.setDoInput(true);  //??????????
+            conn.setDoOutput(true); //?????????
+            conn.setUseCaches(false);  //????????????
+            conn.setRequestMethod("POST");  //?????
+            conn.setRequestProperty("Charset", CHARSET);  //???????
             conn.setRequestProperty("connection", "keep-alive");   
             conn.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary=" + BOUNDARY); 
 

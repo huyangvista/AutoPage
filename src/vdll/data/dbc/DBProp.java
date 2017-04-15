@@ -25,18 +25,6 @@ public class DBProp {
     private String removeAbandoned;
     private String removeAbandonedTimeout;
 
-    static //加载驱动
-    {
-        try
-        {
-            Class.forName("com.mysql.jdbc.Driver");
-        }
-        catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     public DBProp() {
     }
 
@@ -52,6 +40,9 @@ public class DBProp {
             driverClassName = prop.getProperty("driverClassName");
             url = prop.getProperty("url");
             databaseName = url.substring(url.lastIndexOf("/") + 1);
+            if(url.contains("?")){
+                databaseName = databaseName.substring(0,databaseName.indexOf("?"));
+            }
             username = prop.getProperty("username");
             password = prop.getProperty("password");
 

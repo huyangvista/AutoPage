@@ -1,11 +1,11 @@
-package vdll.tools;
+package vdll.math;
 
 import java.util.List;
 
-public class VMath
+public class RandomTest
 {
 
-	public VMath()
+	public RandomTest()
 	{
 		// TODO Auto-generated constructor stub
 	}

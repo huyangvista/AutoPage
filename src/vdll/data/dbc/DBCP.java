@@ -1,7 +1,6 @@
 package vdll.data.dbc;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
@@ -23,7 +22,7 @@ public class DBCP implements IDB {
         load();
     }
 
-    private DBCP() {
+    public DBCP() {
 
     }
 
@@ -31,9 +30,9 @@ public class DBCP implements IDB {
         try {
             dbProp.load();
             dataSource = BasicDataSourceFactory.createDataSource(dbProp.getProp());
-            Connection conn = open();
-            DatabaseMetaData mdm = conn.getMetaData();
-            conn.close();
+//            Connection conn = open();
+//            DatabaseMetaData mdm = conn.getMetaData();
+//            conn.close();
         } catch (Exception e) {
         }
     }
@@ -54,19 +53,8 @@ public class DBCP implements IDB {
         return conn;
     }
 
-    /**
-     * 关闭连接
-     *
-     * @param conn 需要关闭的连接
-     */
     public static void close(Connection conn) {
-        try {
-            if (conn != null && !conn.isClosed()) {
-                conn.setAutoCommit(true);
-                conn.close();
-            }
-        } catch (SQLException e) {
-        }
+        DBUtil.close(conn);
     }
 
 }

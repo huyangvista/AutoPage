@@ -1,14 +1,6 @@
 package vdll.utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public  class FileOperate {
@@ -340,6 +332,39 @@ public  class FileOperate {
 
     public static String getMessage() {
         return message;
+    }
+
+
+    private static int FILESIZE = 4 * 1024;
+    /**
+     * 将一个InputStream里面的数据写入到SD卡中
+     * @param fileName
+     * @param input
+     * @return
+     */
+    public static File write2SDFromInput(String fileName, InputStream input) {
+        File file = null;
+        OutputStream output = null;
+        try {
+            file = new File(fileName);
+            output = new FileOutputStream(file);
+            byte[] buffer = new byte[FILESIZE];
+
+            int length;
+            while ((length = (input.read(buffer))) > 0) {
+                output.write(buffer, 0, length);
+            }
+            output.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                output.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
     }
 }
 

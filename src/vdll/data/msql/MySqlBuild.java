@@ -105,7 +105,8 @@ public class MySqlBuild<T> extends MySql {
 	 * @param cls
 	 */
 	public MySqlBuild(Class<T> cls) {
-		this(cls,cls.getSimpleName());
+		//this(cls,cls.getSimpleName());
+		this(cls,cls.getName());
 	}
 
 	/**
@@ -114,7 +115,7 @@ public class MySqlBuild<T> extends MySql {
 	 * @param vmsql
 	 */
 	public MySqlBuild(Class<T> cls, MySql vmsql) {
-		this(cls,cls.getSimpleName(),vmsql);
+		this(cls,cls.getName(),vmsql);
 	}
 	public MySqlBuild(Class<T> cls,String tabName, MySql vmsql) {
 		this(cls,tabName);
