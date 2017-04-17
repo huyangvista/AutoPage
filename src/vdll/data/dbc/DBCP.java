@@ -8,7 +8,7 @@ import org.apache.commons.dbcp.*;
 //import org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory;
 
 /**
- * java 数据库连接池
+ * java 数据库连接池 [JavaWeb 项目移植]
  * tomcat数据库连接池管理类<br>
  * 使用为tomcat部署环境<br>
  * 需要在类路径下准备数据库连接配置文件dbcp.properties

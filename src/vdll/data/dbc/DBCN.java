@@ -5,7 +5,7 @@ import java.sql.*;
 /**
  * JDBC操作的工具类,加载数据库驱动,获取数据库连接
  *
- * @author Hocean
+ * Created by Hocean on 2017/4/14.
  */
 public class DBCN implements IDB {
     private static DBProp dbProp = new DBProp();
