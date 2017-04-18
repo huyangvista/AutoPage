@@ -3,6 +3,10 @@ package vdll.utils.io;
 import java.io.*;
 import java.util.StringTokenizer;
 
+/**
+ * 文件操作
+ * Created by Hocean on 2017/4/7.
+ */
 public  class FileOperate {
     private static String message;
 

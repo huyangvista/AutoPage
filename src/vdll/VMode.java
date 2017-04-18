@@ -1,4 +1,4 @@
-package vdll.data;
+package vdll;
 
 class Main
 {

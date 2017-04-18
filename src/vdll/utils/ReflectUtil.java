@@ -1,4 +1,4 @@
-package vdll.tools;
+package vdll.utils;
 
 //注解使用
 import static java.lang.annotation.ElementType.CONSTRUCTOR;

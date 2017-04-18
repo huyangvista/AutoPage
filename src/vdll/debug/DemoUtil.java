@@ -1,6 +1,6 @@
-package vdll.utils;
+package vdll.debug;
 
-import vdll.tools.ReflectUtil;
+import vdll.utils.ReflectUtil;
 
 import java.lang.reflect.Field;
 

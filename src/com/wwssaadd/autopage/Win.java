@@ -3,7 +3,6 @@ package com.wwssaadd.autopage;
 import demo.bas_bi_summary;
 import vdll.data.dbc.DBCP;
 import vdll.data.msql.MySqlBuild;
-import vdll.tools.CompareUtil;
 import vdll.utils.*;
 import vdll.data.msql.MySql;
 import vdll.data.msql.MySqlString;
@@ -22,6 +21,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import vdll.utils.String.StringGet;
 import vdll.utils.io.FileOperate;
 
 /**

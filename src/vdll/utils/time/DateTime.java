@@ -1,4 +1,4 @@
-package vdll.tools;
+package vdll.utils.time;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

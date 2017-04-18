@@ -8,8 +8,7 @@ import java.io.OutputStream;
 
 /**
  * 对象靓点 文件操作
- * @author Hocean
- *
+ * Created by Hocean on 2017/4/7.
  */
 public class FileUtils {
 	private String SDPATH;

@@ -1,4 +1,6 @@
-package vdll.tools;
+package vdll.utils.io;
+
+import vdll.utils.Base64;
 
 import java.io.*;
 import java.util.ArrayList;

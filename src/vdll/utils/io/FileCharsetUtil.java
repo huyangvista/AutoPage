@@ -1,16 +1,16 @@
 package vdll.utils.io;
 
-import java.util.*;
-import java.math.*;
-import java.util.regex.*;
 import java.io.*;
 
+/**
+ * 文件转换编码
+ * Created by Hocean on 2017/4/7.
+ */
 public class FileCharsetUtil {
 
     public static void main(String[] args) {
         //String vsPashGen= "/storage/emulated/0/"; //ANDROID
         String vsPashGen = "ass/"; //WIN
-
         //dirCharset((vsPashGen + "src"), "GBK", (vsPashGen + "src222"), "UTF-8");
         //dirCharset(new File(vsPashGen + "src"), "GBK", new File(vsPashGen + "src222"), "UTF-8");
         //dirCharset(new File(vsPashGen + "src/Bullets.java"), "GBK", new File(vsPashGen + "src222/Bullets.java"), "UTF-8");

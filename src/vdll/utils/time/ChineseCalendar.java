@@ -1,5 +1,5 @@
 
-package vdll.tools;
+package vdll.utils.time;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package vdll.tools;
+package vdll.debug;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
