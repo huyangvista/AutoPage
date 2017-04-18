@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import vdll.utils.io.FileOperate;
 
 /**
  * Created by Hocean on 2017/1/25.
@@ -31,7 +32,7 @@ public class Win {
     private JButton button1;
     public JPanel panel1;
     private JButton button2;
-    private JButton button3;
+    private JButton tsqlButton;
     private JTextField textField1;
     private JButton button4;
     private JButton button5;
@@ -55,7 +56,7 @@ public class Win {
             for (Map<String, Object> map : list) {
                 System.out.println(map.get("id"));
             }
-            mySql.exeU("INSERT INTO bas_si_user(id,si_id,user_id) VALUES('2','2','2')");
+           // mySql.exeU("INSERT INTO bas_si_user(id,si_id,user_id) VALUES('2','2','2')");
         });
         button2.addActionListener(e -> {
             try {
@@ -67,7 +68,7 @@ public class Win {
                 String[] cols = mySql.getColumnName();
                 String txt = FileOperate.readTxt(path + "fragment.txt", "");
                 //txt = "sadfa\r\nsdf[[asdfasdfas]]asdfasdfasdfsdfsadfdfsdf";
-                List<String> listItem = Tools.getTagIn(txt, "<item>", "</item>");
+                List<String> listItem = StringGet.getTagIn(txt, "<item>", "</item>");
                /* java.util.List<Map<String, Object>> list =  mySql.getParms();
                 for (Map<String, Object> map: list ) {
                     Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator();
@@ -441,6 +442,12 @@ public class Win {
         });
 
         button6.addActionListener(e -> {
+            List<Map<String, Object>> map = mySql.exeQBuild("SELECT * FROM `tbi_job_log` LIMIT 20",null);
+             for(Map<String, Object> item : map){
+                 System.out.println(item.get("id"));
+              }
+
+
 
         });
         button7.addActionListener(e -> {

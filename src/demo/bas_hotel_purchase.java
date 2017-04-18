@@ -56,6 +56,5 @@ public class bas_hotel_purchase{
 @AISql public String apver_name_3;
 @AISql public String apv_comm_3;
 @AISql public String apv_time_3;
-@AISql public String travel_purpose;
 
 }

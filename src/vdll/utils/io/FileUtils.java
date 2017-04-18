@@ -1,4 +1,4 @@
-package vdll.net;
+package vdll.utils.io;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,7 +11,7 @@ import java.io.OutputStream;
  * @author Hocean
  *
  */
-public class ViveFileUtils {
+public class FileUtils {
 	private String SDPATH;
 	
 	private int FILESIZE = 4 * 1024; 

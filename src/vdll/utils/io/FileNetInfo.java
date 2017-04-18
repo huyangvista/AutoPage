@@ -1,7 +1,7 @@
-package vdll.net.android;
+package vdll.utils.io;
 
 import java.io.*;
-public class VFile 
+public class FileNetInfo
 {
 	FilePermission u;
 	FileFilter f ;

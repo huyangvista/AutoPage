@@ -1,4 +1,4 @@
-package vdll.net.android;
+package vdll.net;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

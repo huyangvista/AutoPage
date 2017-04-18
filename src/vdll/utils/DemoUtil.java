@@ -5,6 +5,7 @@ import vdll.tools.ReflectUtil;
 import java.lang.reflect.Field;
 
 /**
+ * 调试输出 所有字段
  * Created by Hocean on 2017/4/7.
  */
 public class DemoUtil {

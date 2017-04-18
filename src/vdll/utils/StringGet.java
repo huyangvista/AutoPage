@@ -6,9 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ *
  * Created by Hocean on 2017/2/10.
  */
-public class Tools {
+public class StringGet {
 
 
     public static void main(String[] args) {

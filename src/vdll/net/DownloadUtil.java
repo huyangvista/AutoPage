@@ -1,5 +1,7 @@
 package vdll.net;
 
+import vdll.utils.io.FileUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ViveDownloadUtil {
+public class DownloadUtil {
     
     /**
      * 根据URL下载文件，前提是这个文件当中的内容是文本，函数返回值是文件当中的文本内容
@@ -56,7 +58,7 @@ public class ViveDownloadUtil {
 */
     public int downFile(String urlstr,String path,String fileName){
         InputStream inputStream=null;
-        ViveFileUtils fileUtils=new ViveFileUtils();
+        FileUtils fileUtils=new FileUtils();
         
         if(fileUtils.isFileExist(path+fileName)){
             return 1;

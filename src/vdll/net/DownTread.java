@@ -11,7 +11,7 @@ import java.net.URL;
  * @author Hocean
  *
  */
-public class ViveDownTread
+public class DownTread
 {
 
 	// 定义下载资源的路径
@@ -25,7 +25,7 @@ public class ViveDownTread
 	// 定义下载的文件的总大小
 	private int fileSize;
 
-	public ViveDownTread(String path, String targetFile, int threadNum)
+	public DownTread(String path, String targetFile, int threadNum)
 	{
 		this.path = path;
 		this.threadNum = threadNum;

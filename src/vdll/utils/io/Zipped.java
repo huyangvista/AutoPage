@@ -1,4 +1,4 @@
-package vdll.net;
+package vdll.utils.io;
 
 /**
  * Android Zip压缩解压缩
@@ -6,7 +6,7 @@ package vdll.net;
  * @version 1.0
  * @updated 26-七月-2010 13:04:27
  */
-public class ViveZipped {
+public class Zipped {
 
 
 	/**

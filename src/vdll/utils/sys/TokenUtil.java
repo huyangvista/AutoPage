@@ -18,8 +18,8 @@ public class TokenUtil {
     private static final int SALT_SIZE = 8;
 
     public static void main(String[] args) {
-        System.out.println(entryptPassword("vive"));
-        System.out.println(validatePassword("vive", "a8aea1c8c51ede6aa907fa61cd090c0a38d84564f4d01be258fb96b0"));
+        System.out.println(entryptPassword("1234"));
+        System.out.println(validatePassword("1234", "fcf9a705817b6c5c4e120adb777b66275ec04cc5aa9753569c127716"));
 
     }
 

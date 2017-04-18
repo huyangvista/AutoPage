@@ -1,7 +1,7 @@
 package vdll.data.msql;
 
 import vdll.data.dbc.DBCP;
-import vdll.utils.FileOperate;
+import vdll.utils.io.FileOperate;
 
 import java.util.Iterator;
 import java.util.Map;
