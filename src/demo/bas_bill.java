@@ -26,5 +26,6 @@ public class bas_bill{
 @AISql public String settle_type;
 @AISql public String iou_amount;
 @AISql public String insur_amount;
+@AISql public String voucher_status;
 
 }

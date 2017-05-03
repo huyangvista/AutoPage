@@ -43,5 +43,6 @@ public class bas_air_trans_records{
 @AISql public String update_date;
 @AISql public String update_by;
 @AISql public String export_flag;
+@AISql public String tzval;
 
 }
