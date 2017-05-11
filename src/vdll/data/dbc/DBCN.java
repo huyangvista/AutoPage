@@ -11,7 +11,7 @@ public class DBCN implements IDB {
     private static DBProp dbProp = new DBProp();
 
     static {
-        load();
+        //load();
     }
 
     public DBCN() {

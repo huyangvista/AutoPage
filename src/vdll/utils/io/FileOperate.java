@@ -23,7 +23,7 @@ public  class FileOperate {
      * @return 返回文本文件的内容
      */
     public static String readTxt(String filePathAndName, String encoding){
-        encoding = encoding.trim();
+        //encoding = encoding.trim();
         StringBuffer str = new StringBuffer("");
         String st = "";
         try {

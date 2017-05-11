@@ -16,7 +16,6 @@ public class DateTime extends GregorianCalendar {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	public static DateTime dateTimeBase = new DateTime().setTimeMs(0);  //0毫秒时候的日期
 
 	public static void main(String[] args) {
 		DateTime dt = new DateTime();
@@ -108,6 +107,16 @@ public class DateTime extends GregorianCalendar {
 	}
 	public DateTime(long millis) {
 		setTimeMs(millis);
+	}
+
+	public static DateTime Base(){
+		return new DateTime().setTimeMs(0);  //0毫秒时候的日期
+	}
+	public static DateTime Zero(){
+		return new DateTime().setYear(1).setMonth(1).setDate(1).setHours(0).setMinutes(0).setSeconds(0).setMilliSeconds(0);  //0毫秒时候的日期
+	}
+	public static DateTime Now(){
+		return new DateTime();  //0毫秒时候的日期
 	}
 
 	//获取

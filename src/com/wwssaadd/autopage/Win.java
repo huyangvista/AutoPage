@@ -25,6 +25,7 @@ import vdll.utils.String.StringGet;
 import vdll.utils.io.FileOperate;
 
 /**
+ * 为JPanel 添加字段名 在上面 alt + insert  form main
  * Created by Hocean on 2017/1/25.
  */
 public class Win {
@@ -38,11 +39,14 @@ public class Win {
     private JButton button5;
     private JButton button6;
     private JButton button7;
+    private JButton button3;
+    private JButton 数据Button;
 
     MySql mySql = new MySql();
 
     public Win() {
         mySql.open();
+
         Main.frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -466,6 +470,36 @@ public class Win {
 
             System.out.printf("The product of both numbers is: ");
         });
+
+        button3.addActionListener(e -> {
+            MySqlBuild<demo.bas_big_client_code> mb = new MySqlBuild<>(demo.bas_big_client_code.class, "bas_big_client_code",mySql);
+            List<demo.bas_big_client_code> list = mb.get();
+            MySqlBuild<demo.bas_big_client_code_copy> mbc = new MySqlBuild<>(demo.bas_big_client_code_copy.class, "bas_big_client_code_copy", mySql);
+            List<demo.bas_big_client_code_copy> listc = mbc.get();
+
+            for (int i = 0; i < list.size(); i++) {
+                demo.bas_big_client_code bv = list.get(i);
+                for (int j = 0; j < listc.size(); j++) {
+                    demo.bas_big_client_code_copy bvc = listc.get(j);
+
+                    if(bv.big_client_code .equals(bvc.big_client_code)){
+                        bv.del_flag = "1";
+                        demo.bas_big_client_code u = new demo.bas_big_client_code();
+                        u.id = bv.id;
+                        mb.update(bv,u);
+
+                        bvc.del_flag = "1";
+                        demo.bas_big_client_code_copy uc = new demo.bas_big_client_code_copy();
+                        uc.id = bvc.id;
+                        mbc.update(bvc,uc);
+
+                        break;
+                    }
+                }
+
+            }
+        });
+
     }
 
 

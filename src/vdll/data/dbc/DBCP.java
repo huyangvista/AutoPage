@@ -19,7 +19,7 @@ public class DBCP implements IDB {
     public static DBProp dbProp = new DBProp();
 
     static {
-        load();
+        //load();
     }
 
     public DBCP() {
