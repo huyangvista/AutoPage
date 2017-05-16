@@ -56,7 +56,7 @@ public class Win {
         });
         button1.addActionListener(e -> {
             mySql.exeQ("SELECT * FROM bas_si_user");
-            java.util.List<Map<String, Object>> list = mySql.getParms();
+            java.util.List<Map<String, Object>> list = mySql.getData();
             for (Map<String, Object> map : list) {
                 System.out.println(map.get("id"));
             }
@@ -73,7 +73,7 @@ public class Win {
                 String txt = FileOperate.readTxt(path + "fragment.txt", "");
                 //txt = "sadfa\r\nsdf[[asdfasdfas]]asdfasdfasdfsdfsadfdfsdf";
                 List<String> listItem = StringGet.getTagIn(txt, "<item>", "</item>");
-               /* java.util.List<Map<String, Object>> list =  mySql.getParms();
+               /* java.util.List<Map<String, Object>> list =  mySql.getData();
                 for (Map<String, Object> map: list ) {
                     Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator();
                     while (it.hasNext()){
@@ -201,21 +201,21 @@ public class Win {
 
             String s = FileOperate.readTxt("src/sql.txt", "utf-8");
             mySql.exeQ(s);
-            java.util.List<Map<String, Object>> list = mySql.getParms();
+            java.util.List<Map<String, Object>> list = mySql.getData();
             ParmsUtil.setListParmsRep(list, replace);
             s = FileOperate.readTxt("src/sql2.txt", "utf-8");
             mySql.exeQ(s);
 
-            java.util.List<Map<String, Object>> list2 = mySql.getParms();
+            java.util.List<Map<String, Object>> list2 = mySql.getData();
             s = FileOperate.readTxt("src/sqls/sql.txt", "utf-8");
             mySql.exeQ(s);
-            java.util.List<Map<String, Object>> listTkt = mySql.getParms();
+            java.util.List<Map<String, Object>> listTkt = mySql.getData();
             s = FileOperate.readTxt("src/sqls/sql1.txt", "utf-8");
             mySql.exeQ(s);
-            java.util.List<Map<String, Object>> listHot = mySql.getParms();
+            java.util.List<Map<String, Object>> listHot = mySql.getData();
             s = FileOperate.readTxt("src/sqls/sql2.txt", "utf-8");
             mySql.exeQ(s);
-            java.util.List<Map<String, Object>> listIns = mySql.getParms();
+            java.util.List<Map<String, Object>> listIns = mySql.getData();
             ParmsUtil.setListParmsRep(listTkt, replace);
             ParmsUtil.setListParmsRep(listHot, replace);
             ParmsUtil.setListParmsRep(listIns, replace);

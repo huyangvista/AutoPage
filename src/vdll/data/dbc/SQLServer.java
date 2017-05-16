@@ -6,11 +6,11 @@ import java.sql.DriverManager;
 /** libs/sqljdbc41.jar
  * Created by Hocean on 2017/5/11.
  */
-public class SQLServer {
+public class SQLServer implements IDB{
     private static String driverName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static String dbURL = "jdbc:sqlserver://rds0nn217mqz086f831t.sqlserver.rds.aliyuncs.com:3400;database=bluesky_desk";
-    private static String userName = "bluesky";
-    private static String userPwd = "blueskycits";
+    private static String username = "bluesky";
+    private static String password = "blueskycits";
 
     static {
         load();
@@ -34,7 +34,7 @@ public class SQLServer {
     public static Connection open() {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(dbURL, userName, userPwd);
+            conn = DriverManager.getConnection(dbURL, username, password);
         } catch (Exception e) {
             e.printStackTrace();
         }

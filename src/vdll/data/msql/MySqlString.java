@@ -34,7 +34,7 @@ public class MySqlString {
      */
     public static void CreateDemo(MySql mySql, String path) {
         mySql.exeQ(MySqlString.showTables());
-        java.util.List<Map<String, Object>> list = mySql.getParms();
+        java.util.List<Map<String, Object>> list = mySql.getData();
         String[] tabNames = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
             Map<String, Object> map = list.get(i);
@@ -58,7 +58,7 @@ public class MySqlString {
             sb.append("\r\n");
             sb.append("\r\n");
             mySql.exeQ(MySqlString.showColumn(tabNames[i], DBCP.dbProp.getDatabaseName()));
-            list = mySql.getParms();
+            list = mySql.getData();
             for (int j = 0; j < list.size(); j++) {
                 Map<String, Object> map = list.get(j);
                 Iterator<Map.Entry<String, Object>> iterator = map.entrySet().iterator();

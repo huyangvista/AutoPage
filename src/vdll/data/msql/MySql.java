@@ -1,10 +1,5 @@
 package vdll.data.msql;
 
-import vdll.data.dbc.DBCN;
-import vdll.data.dbc.DBCP;
-import vdll.data.dbc.DBProp;
-import vdll.data.dbc.IDB;
-
 import java.sql.*;
 import java.util.*;
 
@@ -46,7 +41,7 @@ public class MySql {
         vmsql.sql(vmysqlbuild.getSql()); //设置SQL语句   获取所有信息
         vmsql.exeQ(); //查询
 
-        List<Map<String, Object>> vlist = vmsql.getParms("name", "psword"); //获取游标信息
+        List<Map<String, Object>> vlist = vmsql.getData("name", "psword"); //获取游标信息
 
         vmsql.sql(vmysqlbuild.dropSql()); //设置SQL语句   删除表
         vmsql.exeU(); //删除
@@ -60,18 +55,19 @@ public class MySql {
     private Connection conn = null; //连接
     private PreparedStatement pst = null; //预处理语句
     private ResultSet rs = null; //游标
-    public static DBProp dbProp = new DBProp();
 
-    private IDB idb;
+    private static String driverName = "com.mysql.jdbc.Driver";
+    private static String dbURL = "jdbc:mysql://vives.cc:3306/tbi_erp?useUnicode=true&characterEncoding=utf8";
+    private static String username = "root";
+    private static String password = "hoceanvista";
 
     static {
-        load();
+        //load();
     }
 
     public static void load() {
         try {
-            dbProp.load();
-            Class.forName(dbProp.getDriverClassName());
+            Class.forName(driverName);
         } catch (Exception e) {
         }
     }
@@ -85,32 +81,13 @@ public class MySql {
         this.conn = conn;
     }
 
-    public MySql(IDB idb) {
-        this.idb = idb;
-    }
-
     public static MySql build() {
         return new MySql();
     }
 
-    public static MySql buildDBCP() {
-        return new MySql(new DBCP());
-    }
-
-    public static MySql buildDBCN() {
-        return new MySql(new DBCN());
-    }
-
     //0 -> 1
     public Connection open() {
-        Connection conn = null;
-        if (idb == null) {
-            conn = open(dbProp.getUrl(), dbProp.getUsername(), dbProp.getPassword());
-        } else if (idb instanceof DBCP) {
-            conn = DBCP.open();
-        } else if (idb instanceof DBCN) {
-            conn = DBCN.open();
-        }
+        conn = open(dbURL, username, password);
         return conn;
     }
 
@@ -125,9 +102,9 @@ public class MySql {
     }
 
     public Connection open(String databaseUrl, String databaseName, String username, String password) {
-        //String url = "jdbc:mysql://localhost:3306/" + databaseName + "?useUnicode=true&characterEncoding=utf8";
-        String url = "jdbc:mysql://" + databaseUrl + "/" + databaseName + "?useUnicode=true&characterEncoding=utf8";
         try {
+            //String url = "jdbc:mysql://localhost:3306/" + databaseName + "?useUnicode=true&characterEncoding=utf8";
+            String url = "jdbc:mysql://" + databaseUrl + "/" + databaseName + "?useUnicode=true&characterEncoding=utf8";
             conn = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -250,13 +227,13 @@ public class MySql {
     }
 
     //3.0 -> 3.0.0     查询字段
-    public List<Map<String, Object>> getParms(String... parms) {
+    public List<Map<String, Object>> getData(String... field) {
         List<Map<String, Object>> vlist = new ArrayList<>();
         try {
             while (rs.next()) {
                 Map<String, Object> map = new HashMap<>();
-                for (int i = 0; i < parms.length; i++) {
-                    String vsp = parms[i];
+                for (int i = 0; i < field.length; i++) {
+                    String vsp = field[i];
                     Object vo = rs.getObject(vsp);
                     map.put(vsp, vo);
                 }
@@ -271,12 +248,12 @@ public class MySql {
     }
 
     //3.0 -> 3.0.0     查询字段
-    public List<Map<String, Object>> getParms() {
-        return getParms(rs);
+    public List<Map<String, Object>> getData() {
+        return getData(rs);
     }
 
     //查询字段
-    public static List<Map<String, Object>> getParms(ResultSet rs) {
+    public static List<Map<String, Object>> getData(ResultSet rs) {
         List<Map<String, Object>> vlist = new ArrayList<>();
         try {
             ResultSetMetaData md = rs.getMetaData(); //表结构
@@ -333,7 +310,7 @@ public class MySql {
         open();
         sql(sql);
         exeQ();
-        List<Map<String, Object>> vlist = (parms != null && parms.length > 0) ? getParms(parms) : getParms();
+        List<Map<String, Object>> vlist = (parms != null && parms.length > 0) ? getData(parms) : getData();
         close();
         return vlist;
     }
