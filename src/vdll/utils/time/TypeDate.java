@@ -9,16 +9,22 @@ import java.util.Date;
  */
 public class TypeDate {
 
-    public static void weekday(int year, int month){
+    public static void weekday(int year){
 
     }
 
-    public static void holiday(int year, int month){
-        DateTime dt = DateTime.Zero();
-        dt.setYear(year).setMonth(month);
+    public static void holiday(int year){
 
-        System.out.println(dt.get(DateTime.DAY_OF_MONTH));
-        System.out.println(dt);
+
+        DateTime dt = DateTime.Zero().setYear(year);
+        DateTime end = DateTime.Zero().setYear(year + 1);
+
+        for (int i = 0; dt.getTime().getTime() < end.getTime().getTime(); i++,dt.addDate(1)) {
+            int week = dt.getWeek();
+            if(week == 6 || week == 0){
+                System.out.println(dt);
+            }
+        }
     }
 
 
@@ -111,7 +117,7 @@ public class TypeDate {
 
     public static void main(String[] args)
     {
-        holiday(1,1);
+        holiday(2017);
         TypeDate du = new TypeDate();
         System.out.println("今天日期是：" + du.getNowDate());
         System.out.println("本月有" + du.getDays(du.getYear(), du.getMonth()) + "天");

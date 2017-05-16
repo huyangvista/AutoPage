@@ -1,5 +1,7 @@
 package vdll.utils.time;
 
+import sun.util.calendar.BaseCalendar;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -53,9 +55,14 @@ public class DateTime extends GregorianCalendar {
         System.out.println("创建： " + DateTime.create("2020-6-6 13:06:15").format());
         System.out.println("创建： " + DateTime.createDate("2020-6-6").format());
         System.out.println("创建： " + DateTime.createTime("13:06:15").format());
-        System.out.println("创建： " + new DateTime("2020-6-6 13:06:15").format());
-        System.out.println("创建： " + new DateTime(new Date()).format());
-        System.out.println("创建： " + new DateTime(1000).format());
+        System.out.println("实例： " + new DateTime("2020-6-6 13:06:15").format());
+        System.out.println("实例： " + new DateTime(new Date()).format());
+        System.out.println("实例： " + new DateTime(1000).format());
+        System.out.println("实例： " + new DateTime(2017,5,5,5,5,5));
+        System.out.println("快速创建： " + DateTime.Now());
+        System.out.println("快速创建： " + DateTime.Zero());
+        System.out.println("快速创建： " + DateTime.Today());
+
 
     }//*/
 
@@ -112,12 +119,29 @@ public class DateTime extends GregorianCalendar {
         setTimeMs(millis);
     }
 
+    public DateTime(int year, int month, int dayOfMonth) {
+        this(year, month, dayOfMonth, 0, 0, 0);
+    }
+
+    public DateTime(int year, int month, int dayOfMonth, int hourOfDay, int minute) {
+        this(year, month, dayOfMonth, hourOfDay, minute, 0);
+    }
+
+    public DateTime(int year, int month, int dayOfMonth, int hourOfDay, int minute, int second) {
+        super(year, month - 1, dayOfMonth, hourOfDay, minute, second);
+    }
+
+    DateTime(int year, int month, int dayOfMonth, int hourOfDay, int minute, int second, int millis) {
+        super(year, month - 1, dayOfMonth, hourOfDay, minute, second);
+        setMilliSeconds(millis);
+    }
+
     public static DateTime Base() {
         return new DateTime().setTimeMs(0);  //0毫秒时候的日期
     }
 
     public static DateTime Zero() {
-        return new DateTime().setYear(1).setMonth(1).setDate(1).setHours(0).setMinutes(0).setSeconds(0).setMilliSeconds(0);  //0毫秒时候的日期
+        return new DateTime(1,1,1,0,0,0,0);  //0毫秒时候的日期
     }
 
     public static DateTime Now() {
@@ -145,7 +169,7 @@ public class DateTime extends GregorianCalendar {
     }
 
     public int getHours() {
-        int hour = get(GregorianCalendar.HOUR);//时
+        int hour = get(GregorianCalendar.HOUR_OF_DAY);//时
         return hour;
     }
 
@@ -215,7 +239,7 @@ public class DateTime extends GregorianCalendar {
     }
 
     public DateTime setHours(int hour) {
-        set(GregorianCalendar.HOUR, hour);
+        set(GregorianCalendar.HOUR_OF_DAY, hour);
         return this;
     }
 
@@ -256,7 +280,7 @@ public class DateTime extends GregorianCalendar {
     }
 
     public DateTime addHours(int hour) {
-        add(GregorianCalendar.HOUR, hour);
+        add(GregorianCalendar.HOUR_OF_DAY, hour);
         return this;
     }
 
