@@ -59,7 +59,6 @@ public class TokenUtil {
      * @param passwordData 密文密码
      * @return 验证成功返回true
      */
-
     public static boolean validatePassword(String password, String passwordData) {
         String plain = Encodes.unescapeHtml(password);
         byte[] salt = Encodes.decodeHex(passwordData.substring(0, 16));
