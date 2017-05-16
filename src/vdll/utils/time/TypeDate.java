@@ -23,7 +23,7 @@ public class TypeDate {
 
 
     //返回当前年月日
-    String getNowDate()
+    public String getNowDate()
     {
         Date date = new Date();
         String nowDate = new SimpleDateFormat("yyyy年MM月dd日").format(date);
@@ -31,7 +31,7 @@ public class TypeDate {
     }
 
     //返回当前年份
-    int getYear()
+    public int getYear()
     {
         Date date = new Date();
         String year = new SimpleDateFormat("yyyy").format(date);
@@ -39,7 +39,7 @@ public class TypeDate {
     }
 
     //返回当前月份
-    int getMonth()
+    public int getMonth()
     {
         Date date = new Date();
         String month = new SimpleDateFormat("MM").format(date);
@@ -47,7 +47,7 @@ public class TypeDate {
     }
 
     //判断闰年
-    boolean isLeap(int year)
+    public boolean isLeap(int year)
     {
         if (((year % 100 == 0) && year % 400 == 0) || ((year % 100 != 0) && year % 4 == 0))
             return true;
@@ -56,7 +56,7 @@ public class TypeDate {
     }
 
     //返回当月天数
-    int getDays(int year, int month)
+    public int getDays(int year, int month)
     {
         int days;
         int FebDay = 28;
@@ -90,7 +90,7 @@ public class TypeDate {
     }
 
     //返回当月星期天数
-    int getSundays(int year, int month)
+    public int getSundays(int year, int month)
     {
         int sundays = 0;
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
