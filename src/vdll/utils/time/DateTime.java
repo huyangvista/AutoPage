@@ -119,6 +119,10 @@ public class DateTime extends GregorianCalendar {
 		return new DateTime();  //0毫秒时候的日期
 	}
 
+	public static DateTime Today(){
+		return new DateTime().setHours(0).setMinutes(0).setSeconds(0).setMilliSeconds(0);
+	}
+
 	//获取
 	public int getYear() {
 		int year = get(GregorianCalendar.YEAR);//年
@@ -341,7 +345,7 @@ public class DateTime extends GregorianCalendar {
 		return dt;
 	}
 	public String toString(){
-		return format();
+		return format(FORMAT_BASE);
 	}
 
 }

@@ -15,5 +15,6 @@
     <orderEntry type="library" name="commons-pool-1.6" level="project" />
     <orderEntry type="library" name="android" level="project" />
     <orderEntry type="library" name="sqljdbc41" level="project" />
+    <orderEntry type="library" name="sqljdbc42" level="project" />
   </component>
 </module>
