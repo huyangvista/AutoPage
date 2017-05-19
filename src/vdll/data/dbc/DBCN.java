@@ -43,7 +43,6 @@ public class DBCN implements IDB {
 
     public static void close(Connection conn) {
         DBUtil.close(conn);
-
     }
 
 }

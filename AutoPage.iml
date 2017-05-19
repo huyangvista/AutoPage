@@ -16,5 +16,6 @@
     <orderEntry type="library" name="android" level="project" />
     <orderEntry type="library" name="sqljdbc41" level="project" />
     <orderEntry type="library" name="sqljdbc42" level="project" />
+    <orderEntry type="library" name="jna-3.0.9" level="project" />
   </component>
 </module>
