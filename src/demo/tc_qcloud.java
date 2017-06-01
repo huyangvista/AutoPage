@@ -2,14 +2,14 @@ package demo;
 
 import vdll.data.msql.AISql;
 
-public class sys_mdict{
+public class tc_qcloud{
 
  @AISql public String id;
- @AISql public String parent_id;
- @AISql public String parent_ids;
- @AISql public String name;
- @AISql public String sort;
- @AISql public String description;
+ @AISql public String qcode;
+ @AISql public String message;
+ @AISql public String request_id;
+ @AISql public String tc_file_id;
+ @AISql public String data;
  @AISql public String create_by;
  @AISql public String create_date;
  @AISql public String update_by;

@@ -57,12 +57,12 @@ public class MySql {
     private ResultSet rs = null; //游标
 
     private static String driverName = "com.mysql.jdbc.Driver";
-    private static String dbURL = "jdbc:mysql://vives.cc:3306/tbi_erp?useUnicode=true&characterEncoding=utf8";
+    private static String dbURL = "jdbc:mysql://vives.cc:3306/vives?useUnicode=true&characterEncoding=utf8";
     private static String username = "root";
     private static String password = "hoceanvista";
 
     static {
-        //load();
+        load();
     }
 
     public static void load() {

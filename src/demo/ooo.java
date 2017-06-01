@@ -2,9 +2,10 @@ package demo;
 
 import vdll.data.msql.AISql;
 
-public class sys_holiday{
+public class ooo{
 
+ @AISql public String idd7d;
  @AISql public String id;
- @AISql public String holiday;
+ @AISql public String ii;
 
 }
