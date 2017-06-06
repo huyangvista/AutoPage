@@ -1227,6 +1227,11 @@ public class ReflectUtil {
 		return cls.isInstance(obj);
 	}
 
+	/**
+	 * 得到对象参数类型 【注意 基本类型有可能匹配不到】
+	 * @param args
+	 * @return
+     */
 	public static Class<?>[] getArgs(Object[] args){
 		Class<?>[] argsClass = new Class[args.length];
 		for (int i = 0, j = args.length; i < j; i++)
