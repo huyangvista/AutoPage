@@ -54,7 +54,6 @@ public class DataClient {
                 comm.setSql("SELECT * FROM `t_user`;");
                 comm.setSql("UPDATE `t_user` SET `user_phone`='888' WHERE (`id`='3');");
 
-
                 String json = gson.toJson(comm);
                 client.conned.send(json);
             }
