@@ -20,7 +20,7 @@ public class Server {
 
 
     public Server() {
-        this("127.0.0.1", 61234);
+        this("127.0.0.1", 61235);
     }
 
     public Server(String ip, int prot) {
@@ -103,3 +103,18 @@ public class Server {
     }
 
 }
+
+/*
+    Server server = new Server() {
+        @Override
+        public Conned.IReceive getReceive(final Conned conned) {
+            return new Conned.IReceive() {
+                @Override
+                public void invoke(Object msg) {
+
+                }
+            };
+        }
+    };
+    server.Conn();
+*/

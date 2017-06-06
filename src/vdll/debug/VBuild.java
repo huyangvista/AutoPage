@@ -1,5 +1,9 @@
 package vdll.debug;//package vdll.tools;
-//
+
+
+//libs/android.jar
+//libs/commons-dbcp-1.4.jar
+
 //import java.io.IOException;
 //import java.io.PrintWriter;
 //import java.io.StringWriter;

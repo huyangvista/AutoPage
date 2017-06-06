@@ -16,7 +16,7 @@ public class Client {
     public int prot;
 
     public Client() {
-        this("127.0.0.1", 61234);
+        this("127.0.0.1", 61235);
     }
 
     public Client(String ip, int prot) {
@@ -54,3 +54,15 @@ public class Client {
         this.receive = receive;
     }
 }
+
+/*
+Client client = new Client();
+client.setReceive(new Conned.IReceive() {
+    @Override
+    public void invoke(Object msg) {
+        //System.out.println("客户收到" + msg);
+        textArea1.append(msg.toString());
+    }
+});
+client.Conn();
+ */
