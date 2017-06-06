@@ -5,7 +5,6 @@ import vdll.utils.ReflectUtil;
 import javax.tools.*;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -23,6 +22,7 @@ public class Build {
     public static void main(String[] args) throws Exception {
 
         Build build = new Build();
+        build.build("Hello","public class Hello{public String sayHello (String name){     return \"Hello,\" + name + \"!\";}}", "src/build" );
         build.build("Hello","public class Hello{\n" +
                 "    public String sayHello (String name){\n" +
                 "                    com.wwssaadd.autopage.server.Command comm = new com.wwssaadd.autopage.server.Command();\n" +
@@ -35,6 +35,7 @@ public class Build {
                 "        return \"Hello,\" + name + \"!\" + comm.getSql();\n" +
                 "    }\n" +
                 "}", "src/build" );
+
         Class<?> cls = build.load("src/build", "Hello");
 
         Object hello = ReflectUtil.newInstance(cls);

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="AutoPage:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/AutoPage_jar2</output-path>
+    <root id="archive" name="AutoPage.jar">
+      <element id="module-output" name="AutoPage" />
+    </root>
+  </artifact>
+</component>
