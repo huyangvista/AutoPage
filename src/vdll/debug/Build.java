@@ -23,7 +23,18 @@ public class Build {
     public static void main(String[] args) throws Exception {
 
         Build build = new Build();
-        build.build("Hello","public class Hello{public String sayHello (String name){     return \"Hello,\" + name + \"!\";}}", "src/build" );
+        build.build("Hello","public class Hello{\n" +
+                "    public String sayHello (String name){\n" +
+                "                    com.wwssaadd.autopage.server.Command comm = new com.wwssaadd.autopage.server.Command();\n" +
+                "                    comm.setActionData(\"u\");\n" +
+                "                    comm.setDbURL(\"jdbc:mysql://vives.cc:3306/vives?useUnicode=true&characterEncoding=utf8\");\n" +
+                "                    comm.setUsername(\"root\");\n" +
+                "                    comm.setPassword(\"hoceanvista\");\n" +
+                "                    comm.setSql(\"SELECT * FROM `t_user`;\");\n" +
+                "                    comm.setSql(\"UPDATE `t_user` SET `user_phone`='888' WHERE (`id`='3');\");\n" +
+                "        return \"Hello,\" + name + \"!\" + comm.getSql();\n" +
+                "    }\n" +
+                "}", "src/build" );
         Class<?> cls = build.load("src/build", "Hello");
 
         Object hello = ReflectUtil.newInstance(cls);

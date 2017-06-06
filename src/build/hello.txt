@@ -1,0 +1,12 @@
+public class Hello{
+    public String sayHello (String name){
+                    com.wwssaadd.autopage.server.Command comm = new com.wwssaadd.autopage.server.Command();
+                    comm.setActionData("u");
+                    comm.setDbURL("jdbc:mysql://vives.cc:3306/vives?useUnicode=true&characterEncoding=utf8");
+                    comm.setUsername("root");
+                    comm.setPassword("hoceanvista");
+                    comm.setSql("SELECT * FROM `t_user`;");
+                    comm.setSql("UPDATE `t_user` SET `user_phone`='888' WHERE (`id`='3');");
+        return "Hello," + name + "!" + comm.getSql();
+    }
+}
