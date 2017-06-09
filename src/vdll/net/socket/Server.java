@@ -18,7 +18,6 @@ public class Server {
     private boolean flag = true;
     private Conned.IReceive receive;
 
-
     public Server() {
         this("127.0.0.1", 61235);
     }
@@ -63,7 +62,7 @@ public class Server {
 //                } catch (InterruptedException e1) {
 //                    e1.printStackTrace();
 //                }
-                break;
+                Close();
             }
 
         }
@@ -81,7 +80,20 @@ public class Server {
         }
 
     }
-
+    public void sendAll(Object msg)
+    {
+        for (int i = listConned.size() - 1; i >= 0; i--)
+        {
+            listConned.get(i).send(msg);
+        }
+    }
+    public void anySendAll(Object msg)
+    {
+        for (int i = listConned.size() - 1; i >= 0; i--)
+        {
+            listConned.get(i).anySend(msg);
+        }
+    }
 
     public List<Conned> getListConned() {
         return listConned;

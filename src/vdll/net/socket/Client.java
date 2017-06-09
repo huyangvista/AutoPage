@@ -53,6 +53,16 @@ public class Client {
     public void setReceive(Conned.IReceive receive) {
         this.receive = receive;
     }
+
+    public void send(Object msg)
+    {
+        conned.send(msg);
+    }
+
+    public void AnySend(Object msg)
+    {
+        conned.anySend(msg);
+    }
 }
 
 /*
