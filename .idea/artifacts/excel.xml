@@ -9,7 +9,6 @@
         <element id="library" level="project" name="commons-pool-1.6" />
         <element id="library" level="project" name="gson-2.2.4" />
         <element id="library" level="project" name="jna-3.0.9" />
-        <element id="library" level="project" name="mysql-connector-java-5.1.34" />
         <element id="library" level="project" name="poi-3.16-beta2" />
         <element id="library" level="project" name="sqljdbc42" />
       </element>
