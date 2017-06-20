@@ -21,6 +21,7 @@
       
     <mappers>  
         <mapper resource="user.xml"/>  
-    </mappers>  
+        <mapper resource="tuser.xml"/>
+    </mappers>
   
 </configuration>  

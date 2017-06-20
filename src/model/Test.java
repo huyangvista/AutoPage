@@ -16,20 +16,20 @@ public class Test {
         SqlSessionFactory ssf = new SqlSessionFactoryBuilder().build(reader);  
         SqlSession session = ssf.openSession();  
         try{
-            User user = session.selectOne("selectUser", 1);
+            User user = session.selectOne("user.selectUser", 1);
             System.out.println(user.getName());
             System.out.println(user);
             System.out.println("--------------分隔线---------------");
 
 
 
-            t_user tu = session.selectOne("t_user.selectUser", 1);
+            t_user tu = session.selectOne("tuser.selectUser", 1);
             System.out.println(tu);
             System.out.println("--------------分隔线---------------");
 
 
           
-            List<User> users = session.selectList("selectUsers");
+            List<User> users = session.selectList("user.selectUsers");
             for(int i=0; i<users.size(); i++) {  
                 System.out.println(users.get(i).getName());  
             }  
