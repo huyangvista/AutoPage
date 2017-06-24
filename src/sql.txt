@@ -1,3 +1,4 @@
+
 SELECT
 /*4国内2国际          */			ticket_type,
 /*区域	*/
