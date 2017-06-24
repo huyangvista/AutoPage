@@ -2,6 +2,7 @@ package vdll.net.socket;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 /**
  * Created by Hocean on 2017/5/11.
@@ -9,12 +10,13 @@ import java.net.Socket;
 public class Client {
     public Socket clientSocket;
     public Conned conned;
+    private Conned.IReceive receive;
 
     public String ip;
     public int prot;
 
     public Client() {
-        this("127.0.0.1", 61234);
+        this("127.0.0.1", 61235);
     }
 
     public Client(String ip, int prot) {
@@ -27,6 +29,8 @@ public class Client {
         try {
             clientSocket = new Socket(ip, prot);
             conned = new Conned(clientSocket);
+            conned.tag = "客户";
+            conned.setReceive(receive);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,4 +45,34 @@ public class Client {
 
         }
     }
+
+    public Conned.IReceive getReceive() {
+        return receive;
+    }
+
+    public void setReceive(Conned.IReceive receive) {
+        this.receive = receive;
+    }
+
+    public void send(Object msg)
+    {
+        conned.send(msg);
+    }
+
+    public void AnySend(Object msg)
+    {
+        conned.anySend(msg);
+    }
 }
+
+/*
+Client client = new Client();
+client.setReceive(new Conned.IReceive() {
+    @Override
+    public void invoke(Object msg) {
+        //System.out.println("客户收到" + msg);
+        textArea1.append(msg.toString());
+    }
+});
+client.Conn();
+ */

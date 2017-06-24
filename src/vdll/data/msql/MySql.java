@@ -56,13 +56,15 @@ public class MySql {
     private PreparedStatement pst = null; //预处理语句
     private ResultSet rs = null; //游标
 
-    private static String driverName = "com.mysql.jdbc.Driver";
-    private static String dbURL = "jdbc:mysql://vives.cc:3306/tbi_erp?useUnicode=true&characterEncoding=utf8";
+    //private static String driverName = "com.mysql.jdbc.Driver";
+    private static String driverName = "com.mysql.cj.jdbc.Driver";
+    //private static String dbURL = "jdbc:mysql://vives.cc:3306/vives?useUnicode=true&characterEncoding=utf8";
+    private static String dbURL = "jdbc:mysql://vives.cc:3306/vives?serverTimezone=UTC";
     private static String username = "root";
     private static String password = "hoceanvista";
 
     static {
-        //load();
+        load();
     }
 
     public static void load() {
@@ -88,6 +90,12 @@ public class MySql {
     //0 -> 1
     public Connection open() {
         conn = open(dbURL, username, password);
+        return conn;
+    }
+
+    //0 -> 1
+    public Connection open(Connection conn) {
+        this.conn = conn;
         return conn;
     }
 

@@ -35,7 +35,7 @@ public class ReflectUtil {
 	private static final String GET = "get";
 	private static final String SET = "set";
 
-	
+
 	//关于类
 	/**
 	 * 得到参数类型
@@ -66,8 +66,9 @@ public class ReflectUtil {
 		return newoneClass;
 	}
 
-	
+
 	//关于构造
+
 	/**
 	 * 新建实例
 	 * @param className 类名
@@ -115,7 +116,7 @@ public class ReflectUtil {
 	 * @return新建的实例
 	 * @throws Exception
 	 */
-	public static Object newInstanceObj(Class<?> newoneClass, Class<?>[] argsClass, Object[] args) {		
+	public static Object newInstanceObj(Class<?> newoneClass, Class<?>[] argsClass, Object[] args) {
 		return newInstance(newoneClass,argsClass,args);
 	}
 	/**
@@ -124,11 +125,48 @@ public class ReflectUtil {
 	 * @param args
 	 * @return
 	 */
-	public static Object newInstanceObjInner(Class<?> newoneClass, Class<?>[] argsClass, Object[] args) {		
+	public static Object newInstanceObjInner(Class<?> newoneClass, Class<?>[] argsClass, Object[] args) {
 		return newInstanceInner(newoneClass,argsClass,args);
 	}
+    /**
+     * 新建实例
+     * @param className 类名
+     * @param args 构造函数的参数
+     * @return新建的实例
+     * @throws Exception
+     */
+    public static <T> T newInstance(Class<T> newoneClass, Object... args) {
+        return newInstance(newoneClass, getArgs(args), args);
+    }
+    /**
+     * 私有构造方法  新建实例
+     * @param className
+     * @param args
+     * @return
+     */
+    public static <T> T newInstanceInner(Class<T> newoneClass, Object... args) {
+        return newInstanceInner(newoneClass, getArgs(args), args);
+    }
+    /**
+     * 新建实例
+     * @param className 类名
+     * @param args 构造函数的参数
+     * @return新建的实例
+     * @throws Exception
+     */
+    public static Object newInstanceObj(Class<?> newoneClass, Object... args) {
+        return newInstanceObj(newoneClass, getArgs(args), args);
+    }
+    /**
+     * 私有构造方法  新建实例
+     * @param className
+     * @param args
+     * @return
+     */
+    public static Object newInstanceObjInner(Class<?> newoneClass, Object... args) {
+        return newInstanceObjInner(newoneClass,getArgs(args),args);
+    }
 
-	
 	//关于注解
 	/**
 	 * 获得注解 当前类字段
@@ -181,7 +219,7 @@ public class ReflectUtil {
 				lt.add(t);
 			}
 		}
-		@SuppressWarnings("unchecked")		
+		@SuppressWarnings("unchecked")
 		T[] ts = (T[])Array.newInstance(ctag, lt.size());
 		for (int i = 0; i < ts.length; i++)
 		{
@@ -204,7 +242,7 @@ public class ReflectUtil {
 		return lts;
 	}
 
-	
+
 	//关于字段
 	/**
 	 * 递归查找字段的  回调接口
@@ -223,7 +261,7 @@ public class ReflectUtil {
 	 */
 	private static Object getFieldValuePoint(Object o, String fieldName, IFieldValuePoint inv) {
 		try {
-			if (!fieldName.contains(".")) { //不包含				
+			if (!fieldName.contains(".")) { //不包含
 				return inv.invoke(o, fieldName);
 			}
 			String fnb = fieldName.substring(0, fieldName.indexOf("."));
@@ -276,7 +314,7 @@ public class ReflectUtil {
 			try {
 				Field[] fields = mclazz.getDeclaredFields(); //属性
 				for (int i = 0; i < fields.length; i++) {
-					fields[i].setAccessible(true); //反射私有属性 权限					
+					fields[i].setAccessible(true); //反射私有属性 权限
 				}
 				list.add(fields);
 			}
@@ -286,7 +324,7 @@ public class ReflectUtil {
 		return list;
 	}
 	/**
-	 * 搜索全部可见字段 
+	 * 搜索全部可见字段
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -299,7 +337,7 @@ public class ReflectUtil {
 			try {
 				Field[] fields = mclazz.getFields(); //属性
 				for (int i = 0; i < fields.length; i++) {
-					fields[i].setAccessible(true); //反射私有属性 权限					
+					fields[i].setAccessible(true); //反射私有属性 权限
 				}
 				list.add(fields);
 			}
@@ -309,7 +347,7 @@ public class ReflectUtil {
 		return list;
 	}
 	/**
-	 * 对象当前字段   
+	 * 对象当前字段
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -332,7 +370,7 @@ public class ReflectUtil {
 		Field fields = null;
 		try {
 			fields = cls.getDeclaredField(fieldName);
-			fields.setAccessible(true); //反射私有属性 权限			
+			fields.setAccessible(true); //反射私有属性 权限
 		}
 		catch (NoSuchFieldException | SecurityException e) {
 			e.printStackTrace();
@@ -357,7 +395,7 @@ public class ReflectUtil {
 		return null;
 	}
 	/**
-	 * 搜索全部可见字段 
+	 * 搜索全部可见字段
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -377,7 +415,7 @@ public class ReflectUtil {
 		return null;
 	}
 	/**
-	 * 对象当前字段   
+	 * 对象当前字段
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -402,7 +440,7 @@ public class ReflectUtil {
 	 * @return
 	 */
 	public static Object getFieldValue(Object obj, Field field) {
-		try {			
+		try {
 			return field.get(obj);
 		}
 		catch (Exception e) {
@@ -416,22 +454,22 @@ public class ReflectUtil {
 	 * @param value
 	 */
 	public static void setFieldValue(Object obj, Field field, Object value) {
-		try {			
+		try {
 			field.set(obj,value);
 		}
 		catch (Exception e) {
 		}
 	}
-	
+
 	/**
 	 * 得到类的当前 静态属性值
 	 * @param	 className   类名
 	 * @param	 fieldName   属性名
 	 * @return	 该属性对象
-	 * @throws	 Exception	     
+	 * @throws	 Exception
 	*/
 	public static Object getStaticFieldValue(Class<?> ownerClass, String fieldName) {
-		
+
 		return getFieldValuePoint(ownerClass, fieldName, new IFieldValuePoint() {
 			@Override
 			public Object invoke(Object o, String fieldName) {
@@ -451,10 +489,10 @@ public class ReflectUtil {
 	 * @param	 className   类名
 	 * @param	 fieldName   属性名
 	 * @return	 该属性对象
-	 * @throws	 Exception	     
+	 * @throws	 Exception
 	*/
 	public static Object getStaticFieldValueAll(Class<?> ownerClass, String fieldName) {
-		
+
 		return getFieldValuePoint(ownerClass, fieldName, new IFieldValuePoint() {
 			@Override
 			public Object invoke(Object o, String fieldName) {
@@ -474,10 +512,10 @@ public class ReflectUtil {
 	 * @param	 className   类名
 	 * @param	 fieldName   属性名
 	 * @return	 该属性对象
-	 * @throws	 Exception	     
+	 * @throws	 Exception
 	*/
 	public static Object getStaticFieldValueVisit(Class<?> ownerClass, String fieldName) {
-		
+
 		return getFieldValuePoint(ownerClass, fieldName, new IFieldValuePoint() {
 			@Override
 			public Object invoke(Object o, String fieldName) {
@@ -497,10 +535,10 @@ public class ReflectUtil {
 	 * @param	 className   类名
 	 * @param	 fieldName   属性名
 	 * @return	 该属性对象
-	 * @throws	 Exception	     
+	 * @throws	 Exception
 	*/
 	public static Object getStaticFieldLocal(Class<?> ownerClass, String fieldName) {
-		
+
 		return getFieldValuePoint(ownerClass, fieldName, new IFieldValuePoint() {
 			@Override
 			public Object invoke(Object o, String fieldName) {
@@ -517,7 +555,7 @@ public class ReflectUtil {
 	}
 
 	/**
-	 * 设置类的 当前静态属性值 
+	 * 设置类的 当前静态属性值
 	 * @param className
 	 * @param fieldName
 	 * @param value
@@ -541,7 +579,7 @@ public class ReflectUtil {
 	 * @param	 className   类名
 	 * @param	 fieldName   属性名
 	 * @return	 该属性对象
-	 * @throws	 Exception	     
+	 * @throws	 Exception
 	*/
 	public static void setStaticFieldValueAll(final Class<?> ownerClass, String fieldName, final Object value) {
 		getFieldValuePoint(ownerClass, fieldName, new IFieldValuePoint() {
@@ -562,10 +600,10 @@ public class ReflectUtil {
 	 * @param	 className   类名
 	 * @param	 fieldName   属性名
 	 * @return	 该属性对象
-	 * @throws	 Exception	     
+	 * @throws	 Exception
 	*/
 	public static void setStaticFieldValueVisit(final Class<?> ownerClass, String fieldName, final Object value) {
-		
+
 		  getFieldValuePoint(ownerClass, fieldName, new IFieldValuePoint() {
 			@Override
 			public Object invoke(Object o, String fieldName) {
@@ -584,10 +622,10 @@ public class ReflectUtil {
 	 * @param	 className   类名
 	 * @param	 fieldName   属性名
 	 * @return	 该属性对象
-	 * @throws	 Exception	     
+	 * @throws	 Exception
 	*/
 	public static void setStaticFieldLocal(final Class<?> ownerClass, String fieldName, final Object value) {
-		
+
 		  getFieldValuePoint(ownerClass, fieldName, new IFieldValuePoint() {
 			@Override
 			public Object invoke(Object o, String fieldName) {
@@ -603,7 +641,7 @@ public class ReflectUtil {
 	}
 
 	/**
-	 * 得到对象当前字段 
+	 * 得到对象当前字段
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -626,7 +664,7 @@ public class ReflectUtil {
 		});
 	}
 	/**
-	 * 得到对象全部字段  包括私有字段 
+	 * 得到对象全部字段  包括私有字段
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -649,7 +687,7 @@ public class ReflectUtil {
 		});
 	}
 	/**
-	 * 得到对象全部可见字段 
+	 * 得到对象全部可见字段
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -672,7 +710,7 @@ public class ReflectUtil {
 		});
 	}
 	/**
-	 * 得到对象当前字段   
+	 * 得到对象当前字段
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -694,9 +732,9 @@ public class ReflectUtil {
 			}
 		});
 	}
-	
+
 	/**
-	 * 设置类的当前字段 
+	 * 设置类的当前字段
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -718,7 +756,7 @@ public class ReflectUtil {
 		});
 	}
 	/**
-	 * 设置类的全部字段  包括私有字段 
+	 * 设置类的全部字段  包括私有字段
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -740,7 +778,7 @@ public class ReflectUtil {
 		});
 	}
 	/**
-	 * 设置类的全部可见字段 
+	 * 设置类的全部可见字段
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -762,7 +800,7 @@ public class ReflectUtil {
 		});
 	}
 	/**
-	 * 设置类的当前字段   
+	 * 设置类的当前字段
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -784,7 +822,7 @@ public class ReflectUtil {
 		});
 	}
 
-	
+
 	//关于方法
 	/**
 	 * 执行对象方法 搜索当前类
@@ -851,14 +889,59 @@ public class ReflectUtil {
 		}
 		return null;
 	}
+    /**
+     * 执行对象方法 搜索当前类
+     * @param owner
+     * @param methodName
+     * @param args
+     * @param argsClass
+     * @return
+     */
+    public static Object invokeMethod(Object owner, String methodName, Object... args) {
+        return invokeMethod(owner, methodName, getArgs(args), args);
+    }
+    /**
+     * 执行对象方法 搜索全部父类
+     * @param owner
+     * @param methodName
+     * @param args
+     * @param argsClass
+     * @return
+     */
+    public static Object invokeMethodAll(Object owner, String methodName, Object... args) {
+        return invokeMethodAll(owner, methodName, getArgs(args), args);
+    }
+    /**
+     * 执行对象可见方法 搜索全部父类
+     * @param owner
+     * @param methodName
+     * @param args
+     * @param argsClass
+     * @return
+     */
+    public static Object invokeMethodVisit(Object owner, String methodName, Object... args) {
+        return invokeMethodVisit(owner, methodName, getArgs(args), args);
+    }
+    /**
+     * 执行对象 的本地方法
+     * @param owner
+     * @param methodName
+     * @param argsClass
+     * @param args
+     * @return
+     * @throws Exception
+     */
+    public static Object invokeMethodLocal(Object owner, String methodName, Object... args) {
+        return invokeMethodLocal(owner, methodName, getArgs(args), args);
+    }
 
 	/**
-	 * 执行类的静态方法    搜索当前类                                                     
-	 * @param	 className 类名                                   
-	 * @param	 methodName 方法名                                 
-	 * @param	 args 参数数组                                      
-	 * @return                                                           
-	 *  执行方法返回的结果                                                        
+	 * 执行类的静态方法    搜索当前类
+	 * @param	 className 类名
+	 * @param	 methodName 方法名
+	 * @param	 args 参数数组
+	 * @return
+	 *  执行方法返回的结果
 	 */
 	public static Object invokeStaticMethod(Class<?> ownerClass, String methodName, Class<?>[] argsClass, Object[] args) {
 		try {
@@ -869,12 +952,12 @@ public class ReflectUtil {
 		return null;
 	}
 	/**
-	 * 执行类的静态方法     搜索全部父类                                                    
-	 * @param	 className 类名                                   
-	 * @param	 methodName 方法名                                 
-	 * @param	 args 参数数组                                      
-	 * @return                                                           
-	 *  执行方法返回的结果                                                        
+	 * 执行类的静态方法     搜索全部父类
+	 * @param	 className 类名
+	 * @param	 methodName 方法名
+	 * @param	 args 参数数组
+	 * @return
+	 *  执行方法返回的结果
 	 */
 	public static Object invokeStaticMethodAll(Class<?> ownerClass, String methodName, Class<?>[] argsClass, Object[] args) {
 		try {
@@ -885,12 +968,12 @@ public class ReflectUtil {
 		return null;
 	}
 	/**
-	 * 执行类的静态可见方法   搜索全部父类                                                     
-	 * @param	 className 类名                                   
-	 * @param	 methodName  方法名                                 
-	 * @param	 args  参数数组                                      
-	 * @return                                                           
-	 *  执行方法返回的结果                                                        
+	 * 执行类的静态可见方法   搜索全部父类
+	 * @param	 className 类名
+	 * @param	 methodName  方法名
+	 * @param	 args  参数数组
+	 * @return
+	 *  执行方法返回的结果
 	 */
 	public static Object invokeStaticMethodVisit(Class<?> ownerClass, String methodName, Class<?>[] argsClass, Object[] args) {
 		try {
@@ -902,11 +985,11 @@ public class ReflectUtil {
 	}
 	/**
 	 * 执行类的静态的本地方法         搜索当前类
-	 * @param	 className 类名                                   
-	 * @param	 methodName 方法名                                 
-	 * @param	 args 参数数组                                      
-	 * @return                                                           
-	 *  执行方法返回的结果                                                        
+	 * @param	 className 类名
+	 * @param	 methodName 方法名
+	 * @param	 args 参数数组
+	 * @return
+	 *  执行方法返回的结果
 	 */
 	public static Object invokeStaticMethodLocal(Class<?> ownerClass, String methodName, Class<?>[] argsClass, Object[] args) {
 		try {
@@ -916,6 +999,50 @@ public class ReflectUtil {
 		}
 		return null;
 	}
+	/**
+	 * 执行类的静态方法    搜索当前类
+	 * @param	 className 类名
+	 * @param	 methodName 方法名
+	 * @param	 args 参数数组
+	 * @return
+	 *  执行方法返回的结果
+	 */
+	public static Object invokeStaticMethod(Class<?> ownerClass, String methodName, Object... args) {
+		return invokeStaticMethod(ownerClass,methodName ,getArgs(args), args);
+	}
+	/**
+	 * 执行类的静态方法     搜索全部父类
+	 * @param	 className 类名
+	 * @param	 methodName 方法名
+	 * @param	 args 参数数组
+	 * @return
+	 *  执行方法返回的结果
+	 */
+	public static Object invokeStaticMethodAll(Class<?> ownerClass, String methodName, Object... args) {
+        return invokeStaticMethodAll(ownerClass,methodName ,getArgs(args), args);
+    }
+	/**
+	 * 执行类的静态可见方法   搜索全部父类
+	 * @param	 className 类名
+	 * @param	 methodName  方法名
+	 * @param	 args  参数数组
+	 * @return
+	 *  执行方法返回的结果
+	 */
+	public static Object invokeStaticMethodVisit(Class<?> ownerClass, String methodName, Object... args) {
+        return invokeStaticMethodVisit(ownerClass,methodName ,getArgs(args), args);
+    }
+	/**
+	 * 执行类的静态的本地方法         搜索当前类
+	 * @param	 className 类名
+	 * @param	 methodName 方法名
+	 * @param	 args 参数数组
+	 * @return
+	 *  执行方法返回的结果
+	 */
+	public static Object invokeStaticMethodLocal(Class<?> ownerClass, String methodName, Object... args) {
+        return invokeStaticMethodLocal(ownerClass,methodName ,getArgs(args), args);
+    }
 
 	/**
 	 * 对象当前函数   包括私有函数
@@ -954,7 +1081,7 @@ public class ReflectUtil {
 		return null;
 	}
 	/**
-	 * 搜索全部可见函数 
+	 * 搜索全部可见函数
 	 * @param clazz
 	 * @param methodName
 	 * @param argsClass
@@ -1001,15 +1128,15 @@ public class ReflectUtil {
 	 * @return
 	 */
 	public static Object invoke(Method method, Object obj, Object... args) {
-		try {			
+		try {
 			return method.invoke(obj, args);
 		}
 		catch (Exception e) {
 		}
 		return null;
 	}
-	
-	
+
+
 	//关于 get set
 	/**
 	 * 得到对象的  get 方法      建议使用驼峰命名法     如果不是标准的属性 请参考 invokeMethod?（）方法
@@ -1057,10 +1184,10 @@ public class ReflectUtil {
 			if (propertiesName.contains(point)) { //包含
 				String fieldName = propertiesName.substring(0, lastPoint);
 				obj = invokeGet(obj, fieldName);
-			}			
+			}
 			String methodName = SET + getMethodName(propertiesName.substring(lastPoint + 1));
 			Method method = ReflectUtil.getMethodVisit(obj.getClass(), methodName, argClass);
-			return method.invoke(obj, value);			
+			return method.invoke(obj, value);
 		}
 		catch (Exception e) {
 			return null;
@@ -1078,7 +1205,7 @@ public class ReflectUtil {
 		return new String(items);
 	}
 
-	
+
 	//其他
 	/**
 	* 得到数组中的某个元素
@@ -1099,8 +1226,22 @@ public class ReflectUtil {
 	public static boolean isInstance(Object obj, Class<?> cls) {
 		return cls.isInstance(obj);
 	}
-	
-	
+
+	/**
+	 * 得到对象参数类型 【注意 基本类型有可能匹配不到】
+	 * @param args
+	 * @return
+     */
+	public static Class<?>[] getArgs(Object[] args){
+		Class<?>[] argsClass = new Class[args.length];
+		for (int i = 0, j = args.length; i < j; i++)
+		{
+			argsClass[i] = args[i].getClass();
+		}
+		return argsClass;
+	}
+
+
 	//Demo
 	private static class VReflectObject {
 
@@ -1133,8 +1274,8 @@ public class ReflectUtil {
 			System.out.println("==========================>>> 注解");
 			System.out.println("获取注解: " + ReflectUtil.getTags(VReflectObject.class, ATag.class)[0].value()    );
 			System.out.println("获取全部类注解: " + ReflectUtil.getTagsAll(VReflectObject.class, ATag.class).get(0)[0].id()    );
-			
-			
+
+
 		}
 
 		private VReflectObject() {
@@ -1177,16 +1318,16 @@ public class ReflectUtil {
 		private String id = "0";
 		@ATag("我是姓名")
 		private String name = "";
-		private VReflectObject2 vr2;		
+		private VReflectObject2 vr2;
 		private static String staticField = "我是静态私有字段";
 	}
 	private static class VReflectObject2 {
 		private String id = "id22222222222222222";
-		private VReflectObject3 vr3;		
+		private VReflectObject3 vr3;
 		private VReflectObject2() {
 			super();
 			vr3 = new VReflectObject3();
-		}		
+		}
 		public String getId() {
 			return id;
 		}
@@ -1195,7 +1336,7 @@ public class ReflectUtil {
 		}
 	}
 	private static class VReflectObject3 {
-		private String id = "333333333333333333333  我是  VReflectObject 中的  VReflectObject2  中的  VReflectObject3 的 id 字段";		
+		private String id = "333333333333333333333  我是  VReflectObject 中的  VReflectObject2  中的  VReflectObject3 的 id 字段";
 		public String getId() {
 			return id;
 		}

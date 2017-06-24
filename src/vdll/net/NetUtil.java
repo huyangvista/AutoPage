@@ -14,7 +14,7 @@ import java.net.*;
 
 
 /**
- * new
+ * new 网络请求管理类
  * Hocean 2016年9月9日13:30:23
  */
 public class NetUtil {

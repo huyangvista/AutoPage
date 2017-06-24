@@ -16,9 +16,10 @@ public class Server {
     private int prot;
     private Thread thread;
     private boolean flag = true;
+    private Conned.IReceive receive;
 
     public Server() {
-        this("127.0.0.1", 61234);
+        this("127.0.0.1", 61235);
     }
 
     public Server(String ip, int prot) {
@@ -52,9 +53,16 @@ public class Server {
             try {
                 Socket clientSocket = serverSocket.accept();
                 Conned conned = new Conned(clientSocket);
+                conned.tag = "服务器使用";
+                conned.setReceive(getReceive(conned));
                 listConned.add(conned);
             } catch (Exception e) {
-                break;
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e1) {
+//                    e1.printStackTrace();
+//                }
+                Close();
             }
 
         }
@@ -63,7 +71,7 @@ public class Server {
     public void Close() {
         try {
             flag = false;
-            for (int i = listConned.size() -1; i >= 0; i--) {
+            for (int i = listConned.size() - 1; i >= 0; i--) {
                 listConned.get(i).close();
             }
             if (serverSocket != null) serverSocket.close();
@@ -72,4 +80,53 @@ public class Server {
         }
 
     }
+    public void sendAll(Object msg)
+    {
+        for (int i = listConned.size() - 1; i >= 0; i--)
+        {
+            listConned.get(i).send(msg);
+        }
+    }
+    public void anySendAll(Object msg)
+    {
+        for (int i = listConned.size() - 1; i >= 0; i--)
+        {
+            listConned.get(i).anySend(msg);
+        }
+    }
+
+    public List<Conned> getListConned() {
+        return listConned;
+    }
+
+    public void setListConned(List<Conned> listConned) {
+        this.listConned = listConned;
+    }
+
+    /**
+     *     重写此方法可以为用户独立设置侦听
+     */
+    public Conned.IReceive getReceive(Conned conned) {
+        return receive;
+    }
+
+    public void setReceive(Conned.IReceive receive) {
+        this.receive = receive;
+    }
+
 }
+
+/*
+    Server server = new Server() {
+        @Override
+        public Conned.IReceive getReceive(final Conned conned) {
+            return new Conned.IReceive() {
+                @Override
+                public void invoke(Object msg) {
+
+                }
+            };
+        }
+    };
+    server.Conn();
+*/

@@ -1,6 +1,5 @@
 package com.wwssaadd.autopage;
 
-import demo.bas_bi_summary;
 import vdll.data.dbc.DBCP;
 import vdll.data.msql.MySqlBuild;
 import vdll.utils.*;
@@ -189,7 +188,7 @@ public class Win {
 //                System.out.println(item.id);
 //            }
 
-            MySqlBuild<bas_bi_summary> msb = new MySqlBuild<>(bas_bi_summary.class, "bas_bi_summary", mySql);
+          //  MySqlBuild<bas_bi_summary> msb = new MySqlBuild<>(bas_bi_summary.class, "bas_bi_summary", mySql);
             Object[][] replace = new Object[][]{
                     {ParmsUtil.EListParmsRep.clone, "group_name", "group_name_zone"},
                     {ParmsUtil.EListParmsRep.replace, "group_name_zone",
@@ -258,18 +257,18 @@ public class Win {
                         sales_data = "国际机票经营数据";
                     }
 
-                    bas_bi_summary bbs = new bas_bi_summary();
-                    bbs.namespace = namespace;
-                    bbs.group_name = group_name;
-                    bbs.sales_data = sales_data;
-                    bbs.count = count;
-                    bbs.sales_amount = sales_amount;
-                    bbs.comm_amount = comm_amount;
-                    bbs.difference_amount = difference_amount;
-                    bbs.profit = profit;
-                    bbs.profit_percen = profit_percen;
-                    vbean(bbs);
-                    msb.add(bbs);
+//                    bas_bi_summary bbs = new bas_bi_summary();
+//                    bbs.namespace = namespace;
+//                    bbs.group_name = group_name;
+//                    bbs.sales_data = sales_data;
+//                    bbs.count = count;
+//                    bbs.sales_amount = sales_amount;
+//                    bbs.comm_amount = comm_amount;
+//                    bbs.difference_amount = difference_amount;
+//                    bbs.profit = profit;
+//                    bbs.profit_percen = profit_percen;
+//                    vbean(bbs);
+//                    msb.add(bbs);
                 }
             }
 
@@ -301,18 +300,18 @@ public class Win {
                     if(couHotel != 0) profit = "" + _difference_amount / couHotel;
                      sales_data = "酒店";
 
-                    bas_bi_summary bbs = new bas_bi_summary();
-                    bbs.namespace = namespace;
-                    bbs.group_name = group_name;
-                    bbs.sales_data = sales_data;
-                    bbs.count = count;
-                    bbs.sales_amount = sales_amount;
-                    bbs.comm_amount = comm_amount;
-                    bbs.difference_amount = difference_amount;
-                    bbs.profit = profit;
-                    bbs.profit_percen = profit_percen;
-                    vbean(bbs);
-                    msb.add(bbs);
+//                    bas_bi_summary bbs = new bas_bi_summary();
+//                    bbs.namespace = namespace;
+//                    bbs.group_name = group_name;
+//                    bbs.sales_data = sales_data;
+//                    bbs.count = count;
+//                    bbs.sales_amount = sales_amount;
+//                    bbs.comm_amount = comm_amount;
+//                    bbs.difference_amount = difference_amount;
+//                    bbs.profit = profit;
+//                    bbs.profit_percen = profit_percen;
+//                    vbean(bbs);
+//                    msb.add(bbs);
                 }
             }
 
@@ -344,18 +343,18 @@ public class Win {
                     if(couIns != 0)  profit = "" + _difference_amount / couIns;
                     sales_data = "保险";
 
-                    bas_bi_summary bbs = new bas_bi_summary();
-                    bbs.namespace = namespace;
-                    bbs.group_name = group_name;
-                    bbs.sales_data = sales_data;
-                    bbs.count = count;
-                    bbs.sales_amount = sales_amount;
-                    bbs.comm_amount = comm_amount;
-                    bbs.difference_amount = difference_amount;
-                    bbs.profit = profit;
-                    bbs.profit_percen = profit_percen;
-                    vbean(bbs);
-                    msb.add(bbs);
+//                    bas_bi_summary bbs = new bas_bi_summary();
+//                    bbs.namespace = namespace;
+//                    bbs.group_name = group_name;
+//                    bbs.sales_data = sales_data;
+//                    bbs.count = count;
+//                    bbs.sales_amount = sales_amount;
+//                    bbs.comm_amount = comm_amount;
+//                    bbs.difference_amount = difference_amount;
+//                    bbs.profit = profit;
+//                    bbs.profit_percen = profit_percen;
+//                    vbean(bbs);
+//                    msb.add(bbs);
                 }
             }
 
@@ -472,32 +471,32 @@ public class Win {
         });
 
         button3.addActionListener(e -> {
-            MySqlBuild<demo.bas_big_client_code> mb = new MySqlBuild<>(demo.bas_big_client_code.class, "bas_big_client_code",mySql);
-            List<demo.bas_big_client_code> list = mb.get();
-            MySqlBuild<demo.bas_big_client_code_copy> mbc = new MySqlBuild<>(demo.bas_big_client_code_copy.class, "bas_big_client_code_copy", mySql);
-            List<demo.bas_big_client_code_copy> listc = mbc.get();
-
-            for (int i = 0; i < list.size(); i++) {
-                demo.bas_big_client_code bv = list.get(i);
-                for (int j = 0; j < listc.size(); j++) {
-                    demo.bas_big_client_code_copy bvc = listc.get(j);
-
-                    if(bv.big_client_code .equals(bvc.big_client_code)){
-                        bv.del_flag = "1";
-                        demo.bas_big_client_code u = new demo.bas_big_client_code();
-                        u.id = bv.id;
-                        mb.update(bv,u);
-
-                        bvc.del_flag = "1";
-                        demo.bas_big_client_code_copy uc = new demo.bas_big_client_code_copy();
-                        uc.id = bvc.id;
-                        mbc.update(bvc,uc);
-
-                        break;
-                    }
-                }
-
-            }
+//            MySqlBuild<demo.bas_big_client_code> mb = new MySqlBuild<>(demo.bas_big_client_code.class, "bas_big_client_code",mySql);
+//            List<demo.bas_big_client_code> list = mb.get();
+//            MySqlBuild<demo.bas_big_client_code_copy> mbc = new MySqlBuild<>(demo.bas_big_client_code_copy.class, "bas_big_client_code_copy", mySql);
+//            List<demo.bas_big_client_code_copy> listc = mbc.get();
+//
+//            for (int i = 0; i < list.size(); i++) {
+//                demo.bas_big_client_code bv = list.get(i);
+//                for (int j = 0; j < listc.size(); j++) {
+//                    demo.bas_big_client_code_copy bvc = listc.get(j);
+//
+////                    if(bv.big_client_code .equals(bvc.big_client_code)){
+////                        bv.del_flag = "1";
+////                        demo.bas_big_client_code u = new demo.bas_big_client_code();
+////                        u.id = bv.id;
+////                        mb.update(bv,u);
+////
+////                        bvc.del_flag = "1";
+////                        demo.bas_big_client_code_copy uc = new demo.bas_big_client_code_copy();
+////                        uc.id = bvc.id;
+////                        mbc.update(bvc,uc);
+////
+////                        break;
+////                    }
+//                }
+//
+//            }
         });
 
     }
@@ -663,36 +662,36 @@ public class Win {
         return l;
     }
 
-    public void vbean(bas_bi_summary bbs){
-        if (bbs.namespace.trim().equals("") ) {
-            bbs.namespace = null;
-        }
-        if (bbs.group_name.trim().equals("") ) {
-            bbs.group_name = null;
-        }
-        if (bbs.sales_data.trim().equals("")) {
-            bbs.sales_data = null;
-        }
-
-        if (bbs.count.trim().equals("")) {
-            bbs.count = null;
-        }
-        if (bbs.sales_amount.trim().equals("")) {
-            bbs.sales_amount = null;
-        }
-        if (bbs.comm_amount.trim().equals("")) {
-            bbs.comm_amount = null;
-        }
-        if (bbs.difference_amount.trim().equals("")) {
-            bbs.difference_amount = null;
-        }
-        if ("".equals(bbs.profit.trim()) ) {
-            bbs.profit = null;
-        }
-        if (bbs.profit_percen.trim().equals("") ) {
-            bbs.profit_percen = null;
-        }
-    }
+//    public void vbean(bas_bi_summary bbs){
+//        if (bbs.namespace.trim().equals("") ) {
+//            bbs.namespace = null;
+//        }
+//        if (bbs.group_name.trim().equals("") ) {
+//            bbs.group_name = null;
+//        }
+//        if (bbs.sales_data.trim().equals("")) {
+//            bbs.sales_data = null;
+//        }
+//
+//        if (bbs.count.trim().equals("")) {
+//            bbs.count = null;
+//        }
+//        if (bbs.sales_amount.trim().equals("")) {
+//            bbs.sales_amount = null;
+//        }
+//        if (bbs.comm_amount.trim().equals("")) {
+//            bbs.comm_amount = null;
+//        }
+//        if (bbs.difference_amount.trim().equals("")) {
+//            bbs.difference_amount = null;
+//        }
+//        if ("".equals(bbs.profit.trim()) ) {
+//            bbs.profit = null;
+//        }
+//        if (bbs.profit_percen.trim().equals("") ) {
+//            bbs.profit_percen = null;
+//        }
+//    }
 
     public String getMap(Map<String, Object> map, String key){
         if(map.containsKey(key)){

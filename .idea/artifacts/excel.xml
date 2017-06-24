@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact name="excel">
+    <output-path>$PROJECT_DIR$/out/artifacts/excel</output-path>
+    <root id="root">
+      <element id="artifact" artifact-name="AutoPage:jar" />
+      <element id="directory" name="libs">
+        <element id="library" level="project" name="android" />
+        <element id="library" level="project" name="commons-dbcp-1.4" />
+        <element id="library" level="project" name="commons-pool-1.6" />
+        <element id="library" level="project" name="gson-2.2.4" />
+        <element id="library" level="project" name="jna-3.0.9" />
+        <element id="library" level="project" name="poi-3.16-beta2" />
+        <element id="library" level="project" name="sqljdbc42" />
+      </element>
+    </root>
+  </artifact>
+</component>

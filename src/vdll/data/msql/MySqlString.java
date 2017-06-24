@@ -25,14 +25,14 @@ public class MySqlString {
 
 
     public static void CreateDemo(MySql mySql) {
-        CreateDemo(mySql,"src/demo/");
+        CreateDemo(mySql,"src/demo/","vives");
     }
     /**
      * 根据数据库 创建 entity
      * @param mySql
      * @param path src/demo/
      */
-    public static void CreateDemo(MySql mySql, String path) {
+    public static void CreateDemo(MySql mySql, String path,String dbName) {
         mySql.exeQ(MySqlString.showTables());
         java.util.List<Map<String, Object>> list = mySql.getData();
         String[] tabNames = new String[list.size()];
@@ -57,7 +57,7 @@ public class MySqlString {
             sb.append("public class " + tabNames[i] + "{");
             sb.append("\r\n");
             sb.append("\r\n");
-            mySql.exeQ(MySqlString.showColumn(tabNames[i], DBCP.dbProp.getDatabaseName()));
+            mySql.exeQ(MySqlString.showColumn(tabNames[i], dbName));
             list = mySql.getData();
             for (int j = 0; j < list.size(); j++) {
                 Map<String, Object> map = list.get(j);
@@ -66,13 +66,13 @@ public class MySqlString {
                     Map.Entry<String, Object> next = iterator.next();
                     //System.out.println(next.getValue());
 
-                    sb.append("@AISql public String " + next.getValue() + ";");
+                    sb.append(" @AISql public String " + next.getValue() + ";");
                     sb.append("\r\n");
                 }
             }
             sb.append("\r\n");
             sb.append("}");
-            FileOperate.createFile("src/demo/" + tabNames[i] + ".java", sb.toString());
+            FileOperate.createFile(path + tabNames[i] + ".java", sb.toString());
             //System.out.println(sb.toString());
         }
         System.out.println("build demo finish");

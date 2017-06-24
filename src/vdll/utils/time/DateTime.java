@@ -1,7 +1,5 @@
 package vdll.utils.time;
 
-import sun.util.calendar.BaseCalendar;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -320,7 +318,7 @@ public class DateTime extends GregorianCalendar {
     }
 
     public String format(String format) {
-        if (format == null) return "";
+        if (format == null) return toString();
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(getTime());
     }
@@ -363,7 +361,6 @@ public class DateTime extends GregorianCalendar {
      * 相减 后再减去8h 从 1970-01-01 08:00:00  开始
      * 可获得 相差的 天数 小时 分钟 秒 毫秒
      * 通过  *Count 获取合计天数 小时 分钟 秒 毫秒
-     *
      * @param dtl
      * @param dtr
      * @return

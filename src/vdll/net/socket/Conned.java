@@ -8,6 +8,7 @@ import java.net.Socket;
  * Created by Hocean on 2017/5/11.
  */
 public class Conned {
+    public String tag = "";
     public Socket socket;
     private Thread thread;
     private boolean isConned = false; //连接状态
@@ -24,20 +25,29 @@ public class Conned {
     public Conned(Socket socket) {
         this.socket = socket;
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream(),"utf-8"));
+            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"utf-8"));
             thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     while (flagReceive) {
                         try {
                             String ins = in.readLine();
-                            if(receive != null){
-                                receive.invoke(ins);
+                            if(ins != null){
+                                if(receive != null){
+                                    receive.invoke(ins + "\r\n");
+                                }
+                                //System.out.println(tag + ins);
+                            }else{
+                                Thread.sleep(1000);
                             }
-                            System.out.println(ins);
                         } catch (Exception e) {
+                            try {   //等待处理连接强制丢失
+                                close();
+                                Thread.sleep(1000);
+                            } catch (Exception e1) {
 
+                            }
                         }
                     }
                 }
