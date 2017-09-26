@@ -43,7 +43,8 @@ public class Sqlite implements IDB {
     public static Connection open() {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:src/asses/hudong.db");
+            //conn = DriverManager.getConnection("jdbc:sqlite:src/asses/hudong.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Hocean\\Desktop\\hudong.db");
         } catch (SQLException e) {
             e.printStackTrace();
         }
