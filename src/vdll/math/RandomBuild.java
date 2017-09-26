@@ -14,12 +14,10 @@ public class RandomBuild
 
 	public RandomBuild()
 	{
-		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args)
 	{
-		// TODO Auto-generated method stub
 		int[] vi = randomNoRepeat(7,0,3,7);
 		for (int i : vi)
 		{

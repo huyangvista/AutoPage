@@ -106,8 +106,8 @@ public class MySqlBuild<T> extends MySql {
 	 * @param cls
 	 */
 	public MySqlBuild(Class<T> cls) {
-		//this(cls,cls.getSimpleName());
-		this(cls,cls.getName());
+		this(cls,cls.getSimpleName());
+		//this(cls,cls.getName());
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class MySqlBuild<T> extends MySql {
 	 * @param vmsql
 	 */
 	public MySqlBuild(Class<T> cls, MySql vmsql) {
-		this(cls,cls.getName(),vmsql);
+		this(cls,cls.getSimpleName(),vmsql);
 	}
 	public MySqlBuild(Class<T> cls,String tabName, MySql vmsql) {
 		this(cls,tabName);
@@ -216,6 +216,33 @@ public class MySqlBuild<T> extends MySql {
 		}
 		return list;
 	}
+
+	public List<T> getSql(String  sql) {
+		List<T> list = new ArrayList<>();
+		sql(sql);
+		ResultSet rs = exeQ();
+		try {
+			while (rs.next()) {
+				T vu = (T) ReflectUtil.newInstance(mcls,new Class[]{}, new Object[] {});
+				AISql.Parms par = new AISql.Parms();
+				List<RowTags> valRow = SqlTags.get(mcls,par);
+				for (int i = 0; i < valRow.size(); i++) {
+					String objField = valRow.get(i).getName();
+					String vs = rs.getString(objField);
+					Field field = ReflectUtil.getFieldAll(mcls, objField);
+					field.set(vu, vs);
+				}
+				list.add(vu);
+			}
+			rs.close();
+		}
+		catch (Exception e) {
+			//e.printStackTrace();
+		}
+		return list;
+	}
+
+
 
 	/**
 	 * 按主键 删除
@@ -497,7 +524,73 @@ public class MySqlBuild<T> extends MySql {
 		}		
 		return sb.toString();
 	}
+
+
 	//-------------------------------------------------      合成语句          --------------
+
+
+	public T getOne(T t) {
+		String sql = getOneSql(t);
+		List<T> d = getSql(sql);
+		if (d.size() > 0)
+		{
+			return d.get(0);
+		}
+		return null;
+	}
+	public String getOneSql(T t) {
+		return t == null ? getSql() : getSql(t);
+	}
+
+	public int getMaxID() {
+		List<T> list = getSql(getMaxIDSql());
+		if(list.size() > 0)
+		{
+			String id = ReflectUtil.getFieldValueAll(list.get(0), "id").toString();
+			return Integer.parseInt(id);
+		}
+		return 0;
+	}
+	public String getMaxIDSql() {
+		return String.format ("SELECT max(id) AS id FROM '%s';", tabName);
+	}
+
+
+	public int addAndUpdate(T tnew, T tif) {
+		int r;
+		List<T> g = get(tif);
+		if (g.size() > 0) r = update(tnew, tif);
+		else r = add(tnew);
+		return r;
+	}
+
+	public <MT> List<MT> get(Class<MT> cls, String sql)
+	{
+		List<MT> list = new ArrayList<>();
+		ResultSet rs = exeQ(sql);
+		try
+		{
+			Field[] fields = ReflectUtil.getFields(cls);
+			while (rs.next()){
+				MT to = (MT) ReflectUtil.newInstance(cls.getClass());
+				for (int i = 0; i < fields.length; i++)
+				{
+					Field f = fields[i];
+					Object v = rs.getObject(f.getName());
+					f.set(to, v == null ? "" : v.toString());
+				}
+				list.add(to);
+			}
+			rs.close();
+		}
+		catch (Exception e)
+		{
+			//e.printStackTrace();
+		}
+		return list;
+	}
+
+
 
 }
 

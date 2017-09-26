@@ -186,7 +186,7 @@ public class ParmsUtil {
      */
     public static String ArrayToString(Object val) {
         if (val instanceof String[]) { //是数组
-            List<String> listSore = Arrays.asList((String[]) val);
+            List<String> listSore = java.util.Arrays.asList((String[]) val);
             Collections.sort(listSore);
             ArrayToString(listSore.get(0));
         }
@@ -207,7 +207,7 @@ public class ParmsUtil {
             if (map.containsKey(key)) {
                 Object val = map.get(key);
                 if (val.getClass().isArray()) { //是数组
-                    List<String> listSore = Arrays.asList((String[]) val);
+                    List<String> listSore =  java.util.Arrays.asList((String[]) val);
                     Collections.sort(listSore);
                     map.put(key, sore < 0 ? listSore.get(0) : listSore.get(listSore.size() - 1));
                 }
@@ -298,7 +298,7 @@ public class ParmsUtil {
      * 对列表进行参数转换
      *
      * @param list
-     * @param new  Object[][]{    {ParmsUtil.EListParmsRep.replaceIndex,"settle_type",0,"公司月结","个人支付"}     }
+     * @param   Object[][]{    {ParmsUtil.EListParmsRep.replaceIndex,"settle_type",0,"公司月结","个人支付"}     }
      */
     public static void setListParmsRep(List<Map<String, Object>> list, Object[]... val) {
         if (list == null) return;

@@ -14,6 +14,7 @@ public class FileCharsetUtil {
         //dirCharset((vsPashGen + "src"), "GBK", (vsPashGen + "src222"), "UTF-8");
         dirCharset(new File(vsPashGen + "f"), "GBK", new File(vsPashGen + "s"), "UTF-8");
         //dirCharset(new File(vsPashGen + "src/Bullets.java"), "GBK", new File(vsPashGen + "src222/Bullets.java"), "UTF-8");
+
     }
 
     public FileCharsetUtil() {

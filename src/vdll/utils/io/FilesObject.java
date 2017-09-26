@@ -63,7 +63,6 @@ public class FilesObject<T>
 	//构造文件操作类
 	public FilesObject(String path)
 	{
-		// TODO 锟皆讹拷锟斤拷锟缴的癸拷锟届函锟斤拷锟斤拷锟?
 		file = new File(path);
 	}
 
@@ -98,7 +97,6 @@ public class FilesObject<T>
 		}
 		catch (IOException e)
 		{
-			// TODO 锟皆讹拷锟斤拷锟缴碉拷 catch 锟斤拷
 			e.printStackTrace();
 		}
 	}

@@ -40,7 +40,7 @@ public class DateTime extends GregorianCalendar {
         dt.addSeconds(1);
         dt.addTimeMs(1000 * 60 * 60 * 24 * 10);
         System.out.println("增加时间： " + dt.format());//一般格式输出
-        System.out.println("自定义格式： " + dt.format("yyyy=MM=dd hh&mm&ss E"));//格式输出
+        System.out.println("自定义格式： " + dt.format("yyyy=MM=dd hh&mm&ss E"));//格式输出 EEEE
         System.out.println("自定义获取： " + "今天是 " + dt.get(DateTime.DATE) + "号， 星期" + dt.getWeek());//获取特殊时间
 
         DateTime minus = new DateTime();

@@ -189,7 +189,6 @@ public class CompareUtil<T> {
 					v2 = Double.valueOf(value2.toString());
 				}
 				catch (Exception e) {
-					// TODO: handle exception
 					continue;
 				}
 				double vd = v1 - v2;

@@ -10,12 +10,10 @@ public class Console extends PrintStream
 	public Console(String fileName) throws FileNotFoundException
 	{
 		super(fileName);
-		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args)
 	{
-		// TODO Auto-generated method stub
 	}
 
 	public static void Write(Object ow)

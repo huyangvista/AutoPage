@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.*;
+//import org.apache.commons.dbcp.*;
 //import org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory;
 
 /**
@@ -29,7 +29,7 @@ public class DBCP implements IDB {
     public static void load() {
         try {
             dbProp.load();
-            dataSource = BasicDataSourceFactory.createDataSource(dbProp.getProp());
+            //dataSource = BasicDataSourceFactory.createDataSource(dbProp.getProp());
 //            Connection conn = open();
 //            DatabaseMetaData mdm = conn.getMetaData();
 //            conn.close();

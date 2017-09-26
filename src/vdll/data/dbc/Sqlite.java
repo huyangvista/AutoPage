@@ -41,10 +41,21 @@ public class Sqlite implements IDB {
     }
 
     public static Connection open() {
+
         Connection conn = null;
         try {
-            //conn = DriverManager.getConnection("jdbc:sqlite:src/asses/hudong.db");
-            conn = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Hocean\\Desktop\\hudong.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:src/asses/hudong.db");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return conn;
+    }
+
+    public static Connection open(String path) {
+
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection("jdbc:sqlite:" + path);
         } catch (SQLException e) {
             e.printStackTrace();
         }

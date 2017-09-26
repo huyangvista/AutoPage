@@ -1,10 +1,13 @@
 package vdll.net;
 
-import com.sun.net.httpserver.BasicAuthenticator;
+//import com.sun.net.httpserver.BasicAuthenticator;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,8 +15,10 @@ import java.util.*;
 import java.nio.charset.*;
 import java.net.*;
 
+import vdll.utils.io.FileUtil;
 
-/**
+
+/**       compile group: 'net.lingala.zip4j', name: 'zip4j', version: '1.3.1'
  * new 网络请求管理类
  * Hocean 2016年9月9日13:30:23
  */
@@ -383,4 +388,122 @@ public class NetUtil {
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
     }
+
+
+    public static String downFileText(String urlstr){
+        StringBuffer sb=new StringBuffer();
+        BufferedReader buffer=null;
+        URL url=null;
+        String line=null;
+        try {
+            //创建一个URL对象
+            url=new URL(urlstr);
+            //根据URL对象创建一个Http连接
+            HttpURLConnection urlConn=(HttpURLConnection) url.openConnection();
+            //使用IO读取下载的文件数据
+            buffer=new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+            while((line=buffer.readLine())!=null){
+                sb.append(line);
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            try {
+                buffer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
+    }
+
+
+    /**
+     * 该函数返回整形    -1：代表下载文件错误0 ：下载文件成功1：文件已经存在
+     * @param urlstr
+     * @param path
+     * @param fileName
+     * @return
+     */
+    public static int downFile(String urlstr,String path,String fileName){
+        InputStream inputStream=null;
+        if(FileUtil.exists(path+fileName)){
+            return 1;
+        }else{
+            inputStream=getUrlInputStream(urlstr);
+            File resultFile=FileUtil.saveFile(path, fileName, inputStream);
+            if(resultFile==null){
+                return -1;
+            }
+        }
+        return 0;
+    }
+    public static File downFile(String urlstr,String path,String fileName, boolean isOver){
+        InputStream inputStream=null;
+
+        if(FileUtil.exists(path+ "/" +fileName)){
+            if(isOver){
+                new File(path + "/" + fileName).delete();
+            }else{
+                return null;
+            }
+        }else{
+            inputStream=getUrlInputStream(urlstr);
+            File resultFile=FileUtil.saveFile(path, fileName, inputStream);
+                return resultFile;
+        }
+        return null;
+    }
+
+
+    /**
+     * 根据URL得到输入流
+     * @param urlstr
+     * @return
+     */
+    public static InputStream getUrlInputStream(String urlstr){
+        InputStream inputStream=null;
+        try {
+            URL url=new URL(urlstr);
+            HttpURLConnection urlConn=(HttpURLConnection) url.openConnection();
+            inputStream=urlConn.getInputStream();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return inputStream;
+    }
+
+    public static  byte[] readInputStream(InputStream inputStream) throws IOException {
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        while((len = inputStream.read(buffer)) != -1) {
+            bos.write(buffer, 0, len);
+        }
+        bos.close();
+        return bos.toByteArray();
+
+    }
+
+    public static byte[] getUrlByte(String path)  {
+
+        try {
+            URL url = new URL(path);
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("GET");   //设置请求方法为GET
+            conn.setReadTimeout(5*1000);    //设置请求过时时间为5秒
+            InputStream inputStream = conn.getInputStream();   //通过输入流获得图片数据
+            byte[] data = readInputStream(inputStream);     //获得图片的二进制数据
+            return data;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

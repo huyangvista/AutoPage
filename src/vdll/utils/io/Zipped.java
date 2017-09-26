@@ -3,7 +3,9 @@ package vdll.utils.io;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.charset.Charset;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -25,12 +27,12 @@ public class Zipped {
      * @return
      * @throws Exception
      */
-    public static java.util.List<java.io.File> GetFileList(String zipFileString, boolean bContainFolder, boolean bContainFile) throws Exception {
+    public static java.util.List<File> GetFileList(String zipFileString, boolean bContainFolder, boolean bContainFile) throws Exception {
 
 
-        java.util.List<java.io.File> fileList = new java.util.ArrayList<java.io.File>();
-        java.util.zip.ZipInputStream inZip = new java.util.zip.ZipInputStream(new java.io.FileInputStream(zipFileString));
-        java.util.zip.ZipEntry zipEntry;
+        java.util.List<File> fileList = new java.util.ArrayList<File>();
+        java.util.zip.ZipInputStream inZip = new java.util.zip.ZipInputStream(new FileInputStream(zipFileString));
+        ZipEntry zipEntry;
         String szName = "";
 
         while ((zipEntry = inZip.getNextEntry()) != null) {
@@ -40,13 +42,13 @@ public class Zipped {
 
                 // get the folder name of the widget
                 szName = szName.substring(0, szName.length() - 1);
-                java.io.File folder = new java.io.File(szName);
+                File folder = new File(szName);
                 if (bContainFolder) {
                     fileList.add(folder);
                 }
 
             } else {
-                java.io.File file = new java.io.File(szName);
+                File file = new File(szName);
                 if (bContainFile) {
                     fileList.add(file);
                 }
@@ -69,7 +71,7 @@ public class Zipped {
     public static java.io.InputStream UpZip(String zipFileString, String fileString) throws Exception {
         @SuppressWarnings("resource")
         java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile(zipFileString);
-        java.util.zip.ZipEntry zipEntry = zipFile.getEntry(fileString);
+        ZipEntry zipEntry = zipFile.getEntry(fileString);
 
         return zipFile.getInputStream(zipEntry);
 
@@ -84,8 +86,10 @@ public class Zipped {
      * @throws Exception
      */
     public static void UnZipFolder(String zipFileString, String outPathString) throws Exception {
-        java.util.zip.ZipInputStream inZip = new java.util.zip.ZipInputStream(new java.io.FileInputStream(zipFileString));
-        java.util.zip.ZipEntry zipEntry;
+        Charset gbk = Charset.forName("gbk");
+        ZipFile zf = new ZipFile(new File(zipFileString),Charset.forName("GBK"));
+        java.util.zip.ZipInputStream inZip = new java.util.zip.ZipInputStream(new FileInputStream(zipFileString));
+        ZipEntry zipEntry;
         String szName = "";
 
         while ((zipEntry = inZip.getNextEntry()) != null) {
@@ -95,15 +99,15 @@ public class Zipped {
 
                 // get the folder name of the widget
                 szName = szName.substring(0, szName.length() - 1);
-                java.io.File folder = new java.io.File(outPathString + java.io.File.separator + szName);
+                File folder = new File(outPathString + File.separator + szName);
                 folder.mkdirs();
 
             } else {
 
-                java.io.File file = new java.io.File(outPathString + java.io.File.separator + szName);
+                File file = new File(outPathString + File.separator + szName);
                 file.createNewFile();
                 // get the output stream of the file
-                java.io.FileOutputStream out = new java.io.FileOutputStream(file);
+                FileOutputStream out = new FileOutputStream(file);
                 int len;
                 byte[] buffer = new byte[1024];
                 // read (len) bytes into buffer
@@ -131,13 +135,13 @@ public class Zipped {
     public static void ZipFolder(String srcFileString, String zipFileString) throws Exception {
 
         //创建Zip包
-        java.util.zip.ZipOutputStream outZip = new java.util.zip.ZipOutputStream(new java.io.FileOutputStream(zipFileString));
+        ZipOutputStream outZip = new ZipOutputStream(new FileOutputStream(zipFileString));
 
         //打开要输出的文件
-        java.io.File file = new java.io.File(srcFileString);
+        File file = new File(srcFileString);
 
         //压缩
-        ZipFiles(file.getParent() + java.io.File.separator, file.getName(), outZip);
+        ZipFiles(file.getParent() + File.separator, file.getName(), outZip);
 
         //完成,关闭
         outZip.finish();
@@ -153,18 +157,18 @@ public class Zipped {
      * @param zipOutputSteam
      * @throws Exception
      */
-    private static void ZipFiles(String folderString, String fileString, java.util.zip.ZipOutputStream zipOutputSteam) throws Exception {
+    private static void ZipFiles(String folderString, String fileString, ZipOutputStream zipOutputSteam) throws Exception {
 
         if (zipOutputSteam == null)
             return;
 
-        java.io.File file = new java.io.File(folderString + fileString);
+        File file = new File(folderString + fileString);
 
         //判断是不是文件
         if (file.isFile()) {
 
-            java.util.zip.ZipEntry zipEntry = new java.util.zip.ZipEntry(fileString);
-            java.io.FileInputStream inputStream = new java.io.FileInputStream(file);
+            ZipEntry zipEntry = new ZipEntry(fileString);
+            FileInputStream inputStream = new FileInputStream(file);
             zipOutputSteam.putNextEntry(zipEntry);
 
             int len;
@@ -182,14 +186,14 @@ public class Zipped {
 
             //如果没有子文件, 则添加进去即可
             if (fileList.length <= 0) {
-                java.util.zip.ZipEntry zipEntry = new java.util.zip.ZipEntry(fileString + java.io.File.separator);
+                ZipEntry zipEntry = new ZipEntry(fileString + File.separator);
                 zipOutputSteam.putNextEntry(zipEntry);
                 zipOutputSteam.closeEntry();
             }
 
             //如果有子文件, 遍历子文件
             for (int i = 0; i < fileList.length; i++) {
-                ZipFiles(folderString, fileString + java.io.File.separator + fileList[i], zipOutputSteam);
+                ZipFiles(folderString, fileString + File.separator + fileList[i], zipOutputSteam);
             }//end of for
 
         }//end of if

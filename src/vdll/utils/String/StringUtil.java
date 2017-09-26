@@ -43,4 +43,32 @@ public class StringUtil {
     public static String toString(byte[] bs) {
         return new String(bs);
     }
+
+
+    public static boolean isNoEmpty(Object text) {
+        return (text != null && !text.equals(""));
+    }
+
+    public static boolean isEmpty(Object text) {
+        return !isNoEmpty(text);
+    }
+
+    public static String toNumber(Object text){
+        StringBuilder sb = new StringBuilder();
+        String s = text.toString();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            sb.append((short)c);
+        }
+        return  sb.toString();
+    }
+    public static String autoGenericCode(Object  code, int num) {
+        String result = "";
+        // 保留num的位数
+ // 0 代表前面补充0
+        // num 代表长度为4
+        // d 代表参数为正数型
+        result = String.format("%0" + num + "d", code);
+        return result;
+    }
 }

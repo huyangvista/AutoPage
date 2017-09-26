@@ -59,12 +59,12 @@ public class MySql {
     //private static String driverName = "com.mysql.jdbc.Driver";
     private static String driverName = "com.mysql.cj.jdbc.Driver";
     //private static String dbURL = "jdbc:mysql://vives.cc:3306/vives?useUnicode=true&characterEncoding=utf8";
-    private static String dbURL = "jdbc:mysql://vives.cc:3306/vives?serverTimezone=UTC";
-    private static String username = "root";
-    private static String password = "hoceanvista";
+    private static String dbURL = "jdbc:mysql://mysql.vives.cc:39/vives?serverTimezone=UTC";
+    private static String username = "huyangvista";
+    private static String password = "coslinux66..";
 
     static {
-        load();
+       // load();
     }
 
     public static void load() {
@@ -129,8 +129,7 @@ public class MySql {
             }
             pst = conn.prepareStatement(sql);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            //e.printStackTrace();
+                        //e.printStackTrace();
         }
         return pst;
     }
@@ -141,8 +140,7 @@ public class MySql {
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            //e.printStackTrace();
+                        //e.printStackTrace();
             //String vse = pst.toString();
             //if(vse.indexOf("SHOW CREATE5") < 0)
             System.err.println("exeQ => " + pst.toString());
@@ -158,7 +156,7 @@ public class MySql {
             pst = conn.prepareStatement(sql);
             viu = pst.executeUpdate();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
             System.err.println("exeU => " + pst.toString());
             System.err.println("SQLException => " + e.toString());
         }
@@ -172,7 +170,7 @@ public class MySql {
             pst = conn.prepareStatement(sql);
             vb = pst.execute();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
         }
         return vb;
     }
@@ -182,7 +180,7 @@ public class MySql {
         try {
             rs = pst.executeQuery();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
             //e.printStackTrace();
             //String vse = pst.toString();
             //if(vse.indexOf("SHOW CREATE5") < 0)
@@ -198,7 +196,7 @@ public class MySql {
         try {
             viu = pst.executeUpdate();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
             System.err.println("exeU => " + pst.toString());
             System.err.println("SQLException => " + e.toString());
         }
@@ -211,7 +209,7 @@ public class MySql {
         try {
             vb = pst.execute();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
         }
         return vb;
     }
@@ -249,7 +247,7 @@ public class MySql {
             }
             rs.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
             e.printStackTrace();
         }
         return vlist;
@@ -277,7 +275,7 @@ public class MySql {
             }
             rs.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
             e.printStackTrace();
         }
         return vlist;
@@ -337,7 +335,7 @@ public class MySql {
         try {
             conn.setAutoCommit(vautoCommit);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
             //e.printStackTrace();
         }
     }
@@ -347,7 +345,7 @@ public class MySql {
         try {
             conn.commit();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            
             e.printStackTrace();
         }
     }

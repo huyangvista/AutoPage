@@ -57,7 +57,8 @@ public class FileUtils {
     public boolean isFileExist(String fileName) {
         File file = new File(SDPATH + fileName);
         if (file.exists()) {
-            file.delete();
+            //file.delete();
+            return true;
         }
 
         return false;

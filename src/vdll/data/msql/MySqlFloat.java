@@ -1,4 +1,4 @@
-//package vdll.data.msql;
+package vdll.data.msql;//package vdll.data.msql;
 //
 //import java.io.IOException;
 //import java.io.InputStream;
@@ -83,7 +83,7 @@
 //	//0
 //	public MySqlFloat()
 //	{
-//		// TODO Auto-generated constructor stub
+//		
 //
 //	}
 //
@@ -95,7 +95,7 @@
 //	//0 -> 1
 //	public Connection open(String databaseUrl, String databaseName,  String username, String password)
 //	{
-//		// TODO Auto-generated method stub
+//		
 //		//String url = "jdbc:mysql://localhost:3306/" + databaseName + "?useUnicode=true&characterEncoding=utf8";
 //		String url = "jdbc:mysql://"+databaseUrl+"/" + databaseName + "?useUnicode=true&characterEncoding=utf8";
 //		try
@@ -122,7 +122,7 @@
 //		}
 //		catch (Exception e)
 //		{
-//			// TODO Auto-generated catch block
+//			
 //			//e.printStackTrace();
 //		}
 //		return pst;
@@ -137,7 +137,7 @@
 //		}
 //		catch (SQLException e)
 //		{
-//			// TODO Auto-generated catch block
+//			
 //			//e.printStackTrace();
 //			//String vse = pst.toString();
 //			//if(vse.indexOf("SHOW CREATE5") < 0)
@@ -157,7 +157,7 @@
 //		}
 //		catch (SQLException e)
 //		{
-//			// TODO Auto-generated catch block
+//			
 //			System.err.println("exeU => " + pst.toString());
 //			System.err.println("SQLException => " + e.toString());
 //		}
@@ -174,7 +174,7 @@
 //		}
 //		catch (SQLException e)
 //		{
-//			// TODO Auto-generated catch block
+//			
 //		}
 //		return vb;
 //	}
@@ -187,7 +187,7 @@
 //		}
 //		catch (SQLException e)
 //		{
-//			// TODO Auto-generated catch block
+//			
 //			//e.printStackTrace();
 //			//String vse = pst.toString();
 //			//if(vse.indexOf("SHOW CREATE5") < 0)
@@ -206,7 +206,7 @@
 //		}
 //		catch (SQLException e)
 //		{
-//			// TODO Auto-generated catch block
+//			
 //			System.err.println("exeU => " + pst.toString());
 //			System.err.println("SQLException => " + e.toString());
 //		}
@@ -222,7 +222,7 @@
 //		}
 //		catch (SQLException e)
 //		{
-//			// TODO Auto-generated catch block
+//			
 //		}
 //		return vb;
 //	}
@@ -272,7 +272,7 @@
 //		}
 //		catch (SQLException e)
 //		{
-//			// TODO Auto-generated catch block
+//			
 //			e.printStackTrace();
 //		}
 //		return vlist;
@@ -304,7 +304,7 @@
 //		}
 //		catch (SQLException e)
 //		{
-//			// TODO Auto-generated catch block
+//			
 //			e.printStackTrace();
 //		}
 //		return vlist;
@@ -368,7 +368,7 @@
 //		}
 //		catch (SQLException e)
 //		{
-//			// TODO Auto-generated catch block
+//			
 //			//e.printStackTrace();
 //		}
 //	}
@@ -381,7 +381,7 @@
 //		}
 //		catch (Exception e)
 //		{
-//			// TODO Auto-generated catch block
+//			
 //			e.printStackTrace();
 //		}
 //	}

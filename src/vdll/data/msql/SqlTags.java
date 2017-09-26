@@ -131,7 +131,7 @@ public class SqlTags implements Iterable<SqlTags.RowTags> {
 
 	@Override
 	public Iterator<RowTags> iterator() {
-		// TODO Auto-generated method stub
+		
 		return new VIterator();
 	}
 
@@ -140,19 +140,18 @@ public class SqlTags implements Iterable<SqlTags.RowTags> {
 
 		@Override
 		public boolean hasNext() {
-			// TODO Auto-generated method stub
+			
 			return vindex != vatrow.length;
 		}
 
 		@Override
 		public RowTags next() {
-			// TODO Auto-generated method stub
+			
 			return vatrow[vindex++];
 		}
 
 		@Override
 		public void remove() {
-			// TODO: Implement this method
 		}
 
 	}

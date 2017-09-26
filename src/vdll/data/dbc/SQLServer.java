@@ -13,7 +13,7 @@ public class SQLServer implements IDB{
     private static String password = "blueskycits";
 
     static {
-        load();
+        //load();
     }
 
     public SQLServer() {

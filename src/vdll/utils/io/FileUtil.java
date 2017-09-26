@@ -1,23 +1,24 @@
 package vdll.utils.io;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.nio.CharBuffer;
 import java.util.StringTokenizer;
 
-/**
- * 文件操作
- * Created by Hocean on 2017/4/7.
- */
-public  class FileOperate {
+public class FileUtil {
+    public final static String utf8 = "utf-8";
+    private static int FILESIZE = 4 * 1024;
+
     private static String message;
 
-    public  FileOperate() {
-    }
-
-
-
-    public static String readTxt(String filePathAndName){
-        return readTxt(filePathAndName,null);
-    }
     /**
      * 读取文本文件内容
      *
@@ -25,28 +26,24 @@ public  class FileOperate {
      * @param encoding        文本文件打开的编码方式
      * @return 返回文本文件的内容
      */
-    public static String readTxt(String filePathAndName, String encoding){
-        //encoding = encoding.trim();
+    public static String readTxt(String filePathAndName, String encoding)  {
+        encoding = encoding.trim();
         StringBuffer str = new StringBuffer("");
         String st = "";
         try {
             FileInputStream fs = new FileInputStream(filePathAndName);
             InputStreamReader isr;
-            if (encoding == null || encoding.equals("")) {
+            if (encoding.equals("")) {
                 isr = new InputStreamReader(fs);
             } else {
                 isr = new InputStreamReader(fs, encoding);
             }
             BufferedReader br = new BufferedReader(isr);
             try {
-                String data = "";
-                /*while ((data = br.readLine()) != null) {
-                    str.append(data + " ");
-                }*/
-                char[] buff = new char[1024 * 2];
-                int len;
-                while ((len = br.read(buff)) > 0){
-                    str.append(buff,0,len);
+                char[] cs = new char[1024 * 4];
+                int len = 0;
+                while ((len = br.read(cs)) >  0) {
+                    str.append(cs,0, len);
                 }
             } catch (Exception e) {
                 str.append(e.toString());
@@ -67,7 +64,7 @@ public  class FileOperate {
     public static String createFolder(String folderPath) {
         String txt = folderPath;
         try {
-            File myFilePath = new File(txt);
+            java.io.File myFilePath = new java.io.File(txt);
             txt = folderPath;
             if (!myFilePath.exists()) {
                 myFilePath.mkdir();
@@ -105,7 +102,6 @@ public  class FileOperate {
         return txts;
     }
 
-
     /**
      * 新建文件
      *
@@ -133,7 +129,6 @@ public  class FileOperate {
         }
     }
 
-
     /**
      * 有编码方式的文件创建
      *
@@ -160,7 +155,6 @@ public  class FileOperate {
         }
     }
 
-
     /**
      * 删除文件
      *
@@ -177,7 +171,7 @@ public  class FileOperate {
                 bea = true;
             } else {
                 bea = false;
-                message = (filePathAndName + "	删除文件操作出错");
+                message = (filePathAndName + "删除文件操作出错");
             }
         } catch (Exception e) {
             message = e.toString();
@@ -197,7 +191,7 @@ public  class FileOperate {
             delAllFile(folderPath); //删除完里面所有内容
             String filePath = folderPath;
             filePath = filePath.toString();
-            File myFilePath = new File(filePath);
+            java.io.File myFilePath = new java.io.File(filePath);
             myFilePath.delete(); //删除空文件夹
         } catch (Exception e) {
             message = ("删除文件夹操作出错");
@@ -240,7 +234,6 @@ public  class FileOperate {
         return bea;
     }
 
-
     /**
      * 复制单个文件
      *
@@ -268,7 +261,6 @@ public  class FileOperate {
             message = ("复制单个文件操作出错");
         }
     }
-
 
     /**
      * 复制整个文件夹的内容
@@ -311,7 +303,6 @@ public  class FileOperate {
         }
     }
 
-
     /**
      * 移动文件
      *
@@ -323,7 +314,6 @@ public  class FileOperate {
         copyFile(oldPath, newPath);
         delFile(oldPath);
     }
-
 
     /**
      * 移动目录
@@ -337,26 +327,44 @@ public  class FileOperate {
         delFolder(oldPath);
     }
 
+    /**
+     * 得到错误信息
+     */
     public static String getMessage() {
         return message;
     }
 
+    public static boolean exists(String name) {
+        return new File(name).exists();
+    }
 
-    private static int FILESIZE = 4 * 1024;
-    /**
-     * 将一个InputStream里面的数据写入到SD卡中
-     * @param fileName
-     * @param input
-     * @return
-     */
-    public static File write2SDFromInput(String fileName, InputStream input) {
+    public static File createDir(String dirName) {
+        File dir = new File(dirName);
+        if(!dir.exists())        dir.mkdir();
+        return dir;
+    }
+
+    public static File createNewFile(String name) {
+        try {
+            File f = new File(name);
+            boolean newFile = f.createNewFile();
+            if(newFile)  return f;
+            else return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static File saveFile(String path, String fileName, InputStream input) {
         File file = null;
         OutputStream output = null;
         try {
-            file = new File(fileName);
+            createDir(path);
+            file = createNewFile(path + "/"+ fileName);
+
             output = new FileOutputStream(file);
             byte[] buffer = new byte[FILESIZE];
-
             int length;
             while ((length = (input.read(buffer))) > 0) {
                 output.write(buffer, 0, length);
@@ -375,6 +383,44 @@ public  class FileOperate {
     }
 
 
+    public static String readTxt(File file){
+        return readTxt(file,null);
+    }
+    public static String readTxt(File file, String encoding){
+        //encoding = encoding.trim();
+        StringBuffer str = new StringBuffer("");
+        String st = "";
+        try {
+            FileInputStream fs = new FileInputStream(file);
+            InputStreamReader isr;
+            if (encoding == null || encoding.equals("")) {
+                isr = new InputStreamReader(fs);
+            } else {
+                isr = new InputStreamReader(fs, encoding);
+            }
+            BufferedReader br = new BufferedReader(isr);
+            try {
+                String data = "";
+                /*while ((data = br.readLine()) != null) {
+                    str.append(data + " ");
+                }*/
+                char[] buff = new char[1024 * 2];
+                int len;
+                while ((len = br.read(buff)) > 0){
+                    str.append(buff,0,len);
+                }
+            } catch (Exception e) {
+                str.append(e.toString());
+            }
+            st = str.toString();
+        } catch (IOException es) {
+            st = "";
+        }
+        return st;
+    }
+
+    public static File[] getFiles(String name){
+        return new File(name).listFiles();
+    }
 
 }
-

@@ -34,10 +34,8 @@ public class DownloadUtil {
                 sb.append(line);
             }
         } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }finally{
             try {
@@ -59,7 +57,7 @@ public class DownloadUtil {
     public int downFile(String urlstr,String path,String fileName){
         InputStream inputStream=null;
         FileUtils fileUtils=new FileUtils();
-        
+
         if(fileUtils.isFileExist(path+fileName)){
             return 1;
         }else{
@@ -71,6 +69,26 @@ public class DownloadUtil {
         }
         return 0;
     }
+    public int downFile(String urlstr,String path,String fileName, boolean isOver){
+        InputStream inputStream=null;
+        FileUtils fileUtils=new FileUtils();
+
+        if(fileUtils.isFileExist(path+fileName)){
+            if(isOver){
+                new File(path+fileName).delete();
+            }else{
+                return 1;
+            }
+        }else{
+            inputStream=getInputStreamFormUrl(urlstr);
+            File resultFile=fileUtils.write2SDFromInput(path, fileName, inputStream);
+            if(resultFile==null){
+                return -1;
+            }
+        }
+        return 0;
+    }
+
     
     /**
      * 根据URL得到输入流

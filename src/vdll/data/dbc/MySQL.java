@@ -17,7 +17,7 @@ public class MySQL implements IDB {
     private static String password = "hoceanvista";
 
     static {
-        load();
+        //load();
     }
 
     public MySQL() {
